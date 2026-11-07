@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<title>Zalmann OS · Proyectos de Miguel</title>
+<meta name="description" content="Zalmann OS: escritorio Ubuntu XFCE de inspiración Tahoe, con un dock magnificador renderizado por software. Proyecto en Python, en desarrollo.">
+<link rel="canonical" href="https://ardu01.github.io/zalmann-os-web/">
+<meta property="og:title" content="Zalmann OS">
+<meta property="og:description" content="Escritorio Ubuntu XFCE de inspiración Tahoe, con un dock magnificador renderizado por software. En desarrollo.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ardu01.github.io/zalmann-os-web/">
+<meta property="og:locale" content="es_ES">
+<!-- Contenido limitado a la descripción verificada del proyecto y a su lenguaje (Python). Sin enlace al repositorio privado. -->
+<style>
+:root{--bg:#fbfbfd;--bg2:#f5f5f7;--card:#fff;--fg:#1d1d1f;--fg2:#6e6e73;--line:rgba(0,0,0,.08);--accent:#0071e3;--fill:#0071e3;--nav:rgba(251,251,253,.72);--shadow:0 2px 6px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.06);--dev-bg:#fff4e8;--dev-fg:#c93400}
+@media (prefers-color-scheme:dark){:root{--bg:#000;--bg2:#0b0b0d;--card:#1c1c1e;--fg:#f5f5f7;--fg2:#a1a1a6;--line:rgba(255,255,255,.1);--accent:#2997ff;--fill:#0071e3;--nav:rgba(22,22,23,.72);--shadow:0 0 0 1px rgba(255,255,255,.06);--dev-bg:#3a2a14;--dev-fg:#ffb340}}
+@media (prefers-contrast:more){:root{--fg2:#3a3a3c;--line:rgba(0,0,0,.45)}}
+@media (prefers-contrast:more) and (prefers-color-scheme:dark){:root{--fg2:#e5e5ea;--line:rgba(255,255,255,.5)}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:68px;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;line-height:1.5;letter-spacing:-.011em;min-height:100vh}
+a{color:inherit}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.skip{position:absolute;left:16px;top:0;transform:translateY(-120%);background:var(--fill);color:#fff;padding:10px 16px;border-radius:999px;z-index:20;font-size:14px;font-weight:600}
+.skip:focus{transform:none;top:12px}
+nav{position:sticky;top:0;z-index:10;padding-top:env(safe-area-inset-top);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:var(--nav);border-bottom:1px solid var(--line)}
+.navin{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:22px;min-height:52px;padding:0 max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left));overflow-x:auto;scrollbar-width:none}
+.navin::-webkit-scrollbar{display:none}
+.brand{font-weight:600;font-size:17px;white-space:nowrap;margin-right:auto;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.navin a:not(.brand){font-size:13px;color:var(--fg2);white-space:nowrap;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;flex:none}
+.navin a:not(.brand):hover{color:var(--fg)}
+.hero{padding:72px max(22px,env(safe-area-inset-right)) 64px max(22px,env(safe-area-inset-left));background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
+.hero-in,.wrap{max-width:980px;margin:0 auto}
+.mark{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:var(--fill);color:#fff;font-weight:700;font-size:26px;letter-spacing:-.04em;margin-bottom:22px}
+.eyebrow{font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px}
+h1{font-size:clamp(44px,8vw,76px);font-weight:700;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
+.lead{font-size:clamp(18px,2.2vw,23px);color:var(--fg2);max-width:38rem;margin-top:18px;font-weight:400;text-wrap:pretty}
+.hero-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:26px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
+.pill.dev{background:var(--dev-bg);color:var(--dev-fg)}
+.pill.cat{background:var(--card);color:var(--fg2);border:1px solid var(--line);font-weight:500}
+.updated{font-size:14px;color:var(--fg2)}
+main{max-width:980px;margin:0 auto;padding:8px max(22px,env(safe-area-inset-right)) 24px max(22px,env(safe-area-inset-left))}
+main:focus-visible{outline-offset:6px}
+section{padding:64px 0 8px}
+h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.1;text-wrap:balance}
+.prose{max-width:40rem;margin-top:16px;font-size:17px;color:var(--fg)}
+.prose p+p{margin-top:12px}
+.prose a{color:var(--accent);text-underline-offset:3px}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:28px}
+.fact{background:var(--card);border-radius:22px;padding:22px 20px 20px;box-shadow:var(--shadow);min-width:0}
+.fact dt{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg2)}
+.fact dd{font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.25;margin-top:10px}
+.status{margin-top:28px;background:var(--card);border-radius:22px;padding:28px 28px 26px;box-shadow:var(--shadow);border-left:3px solid #ff9500}
+.status p{margin-top:14px;font-size:17px;color:var(--fg);max-width:40rem}
+.catalog{margin-top:22px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{font-size:15px;padding:10px 18px;min-height:44px;border-radius:999px;border:1px solid var(--line);color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;background:var(--card);transition:background .2s}
+.btn:hover{background:var(--bg2)}
+.btn.primary{background:var(--fill);color:#fff;border-color:transparent}
+.btn.primary:hover{filter:brightness(1.08);background:var(--fill)}
+.btn.primary:focus-visible{outline-color:var(--fg)}
+footer{color:var(--fg2);font-size:13px;padding:72px max(22px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left));border-top:1px solid var(--line);margin-top:72px}
+.footer-in{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+footer a{color:var(--accent);text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+@media (hover:hover) and (pointer:fine){
+  .fact{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+  .fact:hover{transform:translateY(-4px)}
+}
+@media (max-width:900px){
+  .hero{padding-top:48px;padding-bottom:48px}
+  section{padding-top:48px}
+}
+@media (max-width:560px){
+  .facts{grid-template-columns:1fr}
+  .fact dd{font-size:18px}
+  .status{padding:22px 18px}
+  h1{font-size:clamp(40px,12vw,56px)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .fact,.btn{transition:none}
+  .fact:hover{transform:none}
+}
+</style>
+</head>
+<body id="top">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<nav aria-label="En esta página">
+  <div class="navin">
+    <a class="brand" href="#top">Zalmann OS</a>
+    <a href="#que-es">Qué es</a>
+    <a href="#datos">Datos</a>
+    <a href="#estado">Estado</a>
+    <a href="https://ardu01.github.io/proyectos/">Índice</a>
+  </div>
+</nav>
+<header class="hero" id="que-es">
+  <div class="hero-in">
+    <div class="mark" aria-hidden="true">Z</div>
+    <p class="eyebrow">Sistemas</p>
+    <h1>Zalmann OS</h1>
+    <p class="lead">Escritorio Ubuntu XFCE de inspiración Tahoe, con un dock magnificador renderizado por software.</p>
+    <div class="hero-meta">
+      <div class="pills"><span class="pill dev">En desarrollo</span><span class="pill cat">Python</span></div>
+      <p class="updated">Actualizado el <time datetime="2026-11-06">6 de noviembre de 2026</time></p>
+    </div>
+  </div>
+</header>
+<main id="contenido" tabindex="-1">
+  <section id="datos" aria-labelledby="datos-titulo">
+    <h2 id="datos-titulo">Datos confirmados</h2>
+    <dl class="facts">
+      <div class="fact"><dt>Sistema</dt><dd>Ubuntu XFCE</dd></div>
+      <div class="fact"><dt>Referencia visual</dt><dd>Tahoe</dd></div>
+      <div class="fact"><dt>Dock</dt><dd>Magnificador por software</dd></div>
+      <div class="fact"><dt>Lenguaje</dt><dd>Python</dd></div>
+    </dl>
+  </section>
+  <section id="estado" aria-labelledby="estado-titulo">
+    <h2 id="estado-titulo">Estado</h2>
+    <div class="status">
+      <span class="pill dev">En desarrollo</span>
+      <p>El código está en un repositorio privado. Esta página no publica el enlace ni una descarga.</p>
+      <p>La página se ampliará cuando exista más material público.</p>
+    </div>
+  </section>
+  <section id="catalogo" class="catalog" aria-labelledby="catalogo-titulo">
+    <h2 id="catalogo-titulo">En el catálogo</h2>
+    <div class="prose">
+      <p>La ficha está en la sección Prioritario del índice, la misma de SOPA IA y Jerry.</p>
+    </div>
+    <div class="btns">
+      <a class="btn primary" href="https://ardu01.github.io/proyectos/#zalmann-os">Abrir la ficha</a>
+      <a class="btn" href="https://ardu01.github.io/proyectos/#sopa-ia">SOPA IA</a>
+      <a class="btn" href="https://ardu01.github.io/proyectos/#jerry">Jerry</a>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="footer-in">
+    <p>© 2026 Miguel Rodríguez Saiz · ArduSolutions</p>
+    <a href="https://ardu01.github.io/proyectos/">Todos los proyectos</a>
+  </div>
+</footer>
+</body>
+</html>
