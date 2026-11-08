@@ -255,10 +255,9 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
       <p class="sec-no">01</p>
       <h2 id="recorrido-titulo">Recorrido visual</h2>
       <div class="notice">
-        <p>Cuatro capturas son reales y las facilitó el autor: el escritorio del inicio, la tienda, Ajustes del Sistema y el lanzador. El fondo y el tema de esa instalación no se redistribuyen aquí. Lo que Ajustes muestra del equipo no se copia en el texto ni se convierte en requisito.</p>
-        <p><strong>Demostración.</strong> Las otras diez vistas salen de una sesión X11 aislada, a 1920×1080, con la cuenta Demo y datos ficticios. En esa sesión el tema es el alternativo WhiteSur-Light, el fondo está generado y picom no arrancó: no hay sombras ni miniaturas de Mission Control, y la barra superior no está montada. Esas diez no son las capturas del autor.</p>
+        <p>Cuatro capturas reales facilitadas por el autor: el escritorio del inicio, y aquí la tienda, Ajustes del Sistema y el lanzador. Cada archivo aparece una sola vez. El fondo y el tema de esa instalación no se redistribuyen aquí. Lo que Ajustes muestra del equipo no se copia en el texto ni se convierte en requisito.</p>
       </div>
-      <p class="hint">Cada vista se amplía con el ratón, el dedo o el teclado. Dentro, las flechas cambian de captura y Escape cierra. Hay catorce vistas.</p>
+      <p class="hint">Cada vista se amplía con el ratón, el dedo o el teclado. Dentro, las flechas cambian de captura y Escape cierra. Hay cuatro vistas.</p>
       <p class="kicker" id="autor-titulo">Instalación del autor</p>
       <figure class="feature" id="tienda-autor">
         <button type="button" class="shot shot-real" aria-haspopup="dialog" aria-controls="visor">
@@ -299,139 +298,6 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
           </figure>
         </li>
       </ul>
-      <p class="kicker" id="demo-titulo">Demostración en sesión aislada</p>
-      <ul class="gallery">
-        <li>
-          <figure id="dock">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/dock-ampliacion.png" width="1920" height="1080" alt="Dock de la demostración sobre un fondo azul generado. El icono de Finder está ampliado y muestra la etiqueta Finder. No hay barra superior." decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 01</p>
-              <h3>Dock con ampliación</h3>
-              <p class="caption">El puntero agranda el icono de Finder. El dock está dibujado por software. No es cristal en vivo: el rebote y el punto de aplicación abierta no se probaron.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="menu">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/menu-manzana.png" width="1920" height="1080" alt="Menú de Zalmann OS abierto en la esquina superior izquierda, con Reiniciar resaltado. Dock inferior sobre el fondo generado, sin barra superior." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 02</p>
-              <h3>Menú de la manzana</h3>
-              <p class="caption">Menú abierto en la cuenta Demo. Reiniciar aparece resaltado porque el puntero está encima. La barra superior no está montada en esta demostración.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="acerca">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/acerca-de.png" width="1920" height="1080" alt="Ventana About Zalmann OS con la versión 0.8.0 y el botón Close en inglés, sobre el escritorio de demostración." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 03</p>
-              <h3>Acerca de Zalmann OS</h3>
-              <p class="caption">La ventana muestra la versión 0.8.0. El título de la ventana y el botón Close están en inglés por el idioma de la cuenta Demo.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="apariencia">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/apariencia.png" width="1920" height="1080" alt="Ajustes del Sistema, apartado Apariencia: Claro seleccionado, Oscuro marcado como pronto, tema WhiteSur-Light y un aviso de que los títulos no siguen el modo oscuro." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 04</p>
-              <h3>Apariencia</h3>
-              <p class="caption">Claro está elegido. Oscuro aparece como «pronto». La ventana advierte que el modo oscuro aún no está preparado y que los títulos no lo siguen. El tema visible es WhiteSur-Light, el de la demostración, no el tema previsto.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="teclado">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/teclado.png" width="1920" height="1080" alt="Ajustes del Sistema, apartado Teclado. El texto dice que la tecla Windows hace de Comando y Alt de Opción, y muestra una lista de atajos." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 05</p>
-              <h3>Teclado</h3>
-              <p class="caption">La tecla Windows hace de Comando y Alt hace de Opción. El panel lista atajos; esta página no da por ejecutado cada atajo.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="launchpad">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/launchpad.png" width="1920" height="1080" alt="Launchpad de la demostración con Ajustes del Sistema, App Store, Calculadora, Finder, Google Chrome, Terminal, TextEdit y Vista Previa." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 06</p>
-              <h3>Launchpad</h3>
-              <p class="caption">Aplicaciones de la demo: Ajustes del Sistema, App Store, Calculadora, Finder, Chrome, Terminal, TextEdit y Vista Previa. No está la carpeta Herramientas: ArtCraft no se instaló en esta sesión. Es la sesión aislada, no el lanzador de la instalación del autor.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="spotlight">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/spotlight.png" width="1920" height="1080" alt="Spotlight con la búsqueda nota-demo y el resultado nota-demo.txt en la carpeta Documents, en inglés." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 07</p>
-              <h3>Spotlight</h3>
-              <p class="caption">La búsqueda encuentra nota-demo.txt, un archivo de la demo. La carpeta se muestra como Documents, en inglés: es una limitación descrita en el README.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="centro-de-control">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/centro-de-control.png" width="1920" height="1080" alt="Centro de control con Wi-Fi sin conexión, No molestar desactivado y un control de sonido, sobre el escritorio de demostración." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 08</p>
-              <h3>Centro de control</h3>
-              <p class="caption">Wi-Fi figura «Sin conexión»: la sesión no tenía adaptador. El control muestra el Wi-Fi y no lo apaga. No molestar está desactivado. El volumen se ve en pantalla y no se probó.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="app-store">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/app-store.png" width="1920" height="1080" alt="App Store en Descubrir, con PhotoCraft destacado y herramientas de Zalmann con el botón Obtener sin pulsar." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 09</p>
-              <h3>App Store</h3>
-              <p class="caption">Catálogo local, con PhotoCraft destacado. No se pulsó Obtener ni se instaló nada, y Flathub no estaba en la demo. Según el README hay 15 herramientas ArtCraft y 6 entradas de Windows, locales y gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. Esta página no da por probadas esas instalaciones.</p>
-            </figcaption>
-          </figure>
-        </li>
-        <li>
-          <figure id="vista-rapida">
-            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
-              <span class="sr-only">Ampliar.</span>
-              <img src="assets/demo/vista-rapida.png" width="1920" height="1080" alt="Vista rápida del archivo generado muestra-demo.png, con un rectángulo azul, un círculo amarillo y un rectángulo verde, y el botón Abrir con Vista Previa." loading="lazy" decoding="async" fetchpriority="low">
-            </button>
-            <figcaption>
-              <p class="kicker">Demostración · 10</p>
-              <h3>Vista rápida</h3>
-              <p class="caption">Vista rápida de la imagen generada muestra-demo.png, con el botón para abrirla en Vista Previa.</p>
-            </figcaption>
-          </figure>
-        </li>
-      </ul>
     </div>
   </section>
 
@@ -449,7 +315,7 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
         </div>
         <div>
           <dt>Código</dt>
-          <dd>Python 3, GTK 3 y Cairo. El dock se dibuja por software. En la demostración no hay cristal en vivo, y el rebote y el punto de aplicación abierta no se probaron.</dd>
+          <dd>Python 3, GTK 3 y Cairo. El dock se dibuja por software y puede ampliar los iconos. No es cristal en vivo. El rebote y el punto de aplicación abierta no se probaron. La tecla Windows hace de Comando y Alt hace de Opción.</dd>
         </div>
         <div>
           <dt>Herramientas</dt>
@@ -461,15 +327,15 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
         </div>
         <div>
           <dt>Tema previsto</dt>
-          <dd>MacTahoe-Light-solid, con iconos y cursor. No están incluidos en el repositorio. La demostración usa el tema alternativo WhiteSur-Light. Las capturas del autor no identifican ni redistribuyen el fondo o el tema de su instalación.</dd>
+          <dd>MacTahoe-Light-solid, con iconos y cursor. No están incluidos en el repositorio. Las cuatro capturas no redistribuyen el fondo ni el tema de la instalación del autor.</dd>
         </div>
         <div>
           <dt>Compositor</dt>
-          <dd>Las sombras y las miniaturas de Mission Control dependen de picom. En la demostración picom no arrancó, así que no aparecen.</dd>
+          <dd>Las sombras y las miniaturas de Mission Control dependen de picom.</dd>
         </div>
         <div>
           <dt>Tienda</dt>
-          <dd>Catálogo local. El README describe 15 herramientas ArtCraft y 6 entradas de Windows, gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. En la demostración no se pulsó Obtener, no se instaló nada y Flathub no estaba presente. En la captura del autor se ve el botón Abrir; esa leyenda no acredita que cada herramienta se haya instalado o probado.</dd>
+          <dd>Catálogo local. El README describe 15 herramientas ArtCraft y 6 entradas de Windows, gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. En la captura del autor se ve el botón Abrir; esa leyenda no acredita que cada herramienta se haya instalado o probado. Los iconos del lanzador tampoco lo acreditan.</dd>
         </div>
         <div>
           <dt>Pruebas</dt>
@@ -485,20 +351,19 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
       <h2 id="estado-titulo">Estado y limitaciones</h2>
       <p class="status"><span class="dot" aria-hidden="true"></span> En desarrollo</p>
       <div class="prose">
-        <p>El proyecto no está terminado. Lo que sigue es el límite conocido de la versión 0.8.0 y de la demostración, no una lista de fallos inventados ni una promesa de lo que vendrá.</p>
+        <p>El proyecto no está terminado. Lo que sigue es el límite conocido de la versión 0.8.0, no una promesa de lo que vendrá.</p>
       </div>
       <ul class="limits">
         <li>No es un sistema autónomo ni una distribución arrancable. No hay imagen ISO ni descarga en esta página.</li>
         <li>El tema previsto, MacTahoe-Light-solid, y sus iconos y cursor no viajan con el repositorio.</li>
         <li>El modo oscuro figura como «pronto». Los títulos de las ventanas no lo siguen.</li>
-        <li>En la demostración, picom no arrancó: no hay sombras ni miniaturas de Mission Control, y la barra superior no está montada. La captura del autor sí muestra la barra superior. De ahí no se deduce el compositor ni el hardware.</li>
-        <li>En la demostración el dock no es cristal en vivo, y el rebote y el punto de aplicación abierta no se probaron.</li>
+        <li>Las sombras y las miniaturas de Mission Control dependen de picom.</li>
+        <li>El dock no es cristal en vivo. El rebote y el punto de aplicación abierta no se probaron.</li>
         <li>Spotlight puede mostrar la carpeta Documents en inglés, como describe el README.</li>
-        <li>El Wi-Fi del centro de control muestra el estado y no lo apaga. En la demo no había adaptador. El volumen no se probó y No molestar estaba desactivado.</li>
+        <li>El control de Wi-Fi muestra el estado y no lo apaga.</li>
         <li>Wayland y varios monitores no están validados. Android sigue pendiente de Waydroid.</li>
         <li>Las 14 pruebas de unittest no cubren una validación completa ni el hardware.</li>
-        <li>Las diez vistas de la demostración usan la cuenta Demo, un fondo generado y el tema WhiteSur-Light. No son las capturas del autor.</li>
-        <li>Las cuatro capturas reales las facilitó el autor. Esta página muestra esas imágenes y no redistribuye el fondo ni el tema de su instalación. Los datos de equipo visibles en Ajustes no se transcriben ni se toman como requisitos. Los iconos del lanzador no acreditan que cada aplicación se haya probado.</li>
+        <li>Las cuatro capturas reales las facilitó el autor. No redistribuyen el fondo ni el tema de su instalación. Los datos de equipo visibles en Ajustes no se transcriben ni se toman como requisitos. Los iconos del lanzador no acreditan que cada aplicación se haya probado.</li>
       </ul>
     </div>
   </section>
@@ -531,11 +396,11 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
     <div class="visor-bar">
       <div>
         <p id="visor-procedencia">Captura real facilitada por el autor</p>
-        <p id="visor-cuenta">1 de 14</p>
+        <p id="visor-cuenta">1 de 4</p>
       </div>
       <form method="dialog"><button type="submit">Cerrar</button></form>
     </div>
-    <img id="visor-img" alt="" width="1920" height="1080" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+    <img id="visor-img" alt="" width="1919" height="1079" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
     <h2 id="visor-titulo" tabindex="-1"></h2>
     <p id="visor-texto"></p>
     <div class="visor-nav">

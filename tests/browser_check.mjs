@@ -231,7 +231,9 @@ try {
   await prepare(send, { width: 1440, height: 900, mobile: false, scheme: "light" });
   const lightText = await evaluate(send, "document.body.innerText");
   check(lightText.includes("En desarrollo"), "el texto visible no incluye En desarrollo");
-  check(lightText.includes("Demostración"), "el texto visible no incluye Demostración");
+  check(!/WhiteSur|cuenta Demo|Demostración|fondo generado/.test(lightText), "sigue visible la demostración aislada");
+  const imageCount = await evaluate(send, "({ autor: document.querySelectorAll('img[src^=\"assets/autor/\"]').length, demo: document.querySelectorAll('img[src^=\"assets/demo/\"]').length })");
+  check(imageCount.autor === 4 && imageCount.demo === 0, `imágenes inesperadas: ${JSON.stringify(imageCount)}`);
   check(!lightText.includes("github.com/ardu01/zalmann-os"), "el texto visible enlaza el repositorio no verificado");
   check(lightText.includes("Captura real facilitada por el autor"), "falta la procedencia del autor");
   check(!lightText.includes("no se ha recuperado"), "sigue el aviso de captura pendiente");
@@ -247,45 +249,36 @@ try {
   const ajustesTop = await evaluate(send, "document.getElementById('ajustes-autor').getBoundingClientRect().top + window.scrollY");
   await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(ajustesTop) - 90)})`);
   await shoot(send, "desktop_claro_autor_ajustes.png");
-  const dockTop = await evaluate(send, "document.querySelector('#dock').getBoundingClientRect().top + window.scrollY");
-  await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(dockTop) - 90)})`);
-  await shoot(send, "desktop_claro_galeria.png");
-  for (const id of ["teclado", "app-store", "enlaces"]) {
-    const top = await evaluate(send, `document.getElementById(${JSON.stringify(id)}).getBoundingClientRect().top + window.scrollY`);
-    await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(top) - 90)})`);
-    await evaluate(send, "new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))");
-    await shoot(send, `desktop_claro_${id}.png`);
-  }
+  await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1700, deviceScaleFactor: 1, mobile: false });
+  const galleryTop = await evaluate(send, "document.getElementById('tienda-autor').getBoundingClientRect().top + window.scrollY");
+  const galleryBottom = await evaluate(send, "document.getElementById('lanzador-autor').getBoundingClientRect().bottom + window.scrollY");
+  await send("Emulation.setDeviceMetricsOverride", {
+    width: 1440,
+    height: Math.min(1800, Math.ceil(galleryBottom - galleryTop + 160)),
+    deviceScaleFactor: 1,
+    mobile: false,
+  });
+  await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(galleryTop) - 70)})`);
+  await shoot(send, "desktop_galeria_reales.png");
+  await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
 
-  await evaluate(send, "document.querySelector('#dock .shot').focus()");
-  const focused = await evaluate(send, "document.activeElement.className");
-  check(focused === "shot", `el foco no llegó al dock: ${focused}`);
+  await evaluate(send, "document.querySelector('#escritorio .shot').focus()");
+  const focused = await evaluate(send, "document.activeElement?.closest('figure')?.id");
+  check(focused === "escritorio", `el foco no llegó al escritorio: ${focused}`);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13, text: "\r" });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
   await new Promise((r) => setTimeout(r, 150));
-  const open1 = await evaluate(send, "document.getElementById('visor').open");
-  const title1 = await evaluate(send, "document.getElementById('visor-titulo').textContent");
-  check(open1 === true, "Enter no abrió el visor");
-  check(title1 === "Dock con ampliación", `título inicial: ${title1}`);
-  await evaluate(send, "window.scrollTo(0, 0)");
-  await shoot(send, "desktop_claro_visor.png");
-
+  const open1 = await evaluate(send, "document.getElementById('visor').open && document.getElementById('visor-titulo').textContent");
+  check(open1 === "Escritorio", `Enter no abrió el escritorio: ${open1}`);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
-  const title2 = await evaluate(send, "document.getElementById('visor-titulo').textContent");
-  check(title2 === "Menú de la manzana", `la flecha derecha no avanzó: ${title2}`);
-  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "ArrowLeft", code: "ArrowLeft", windowsVirtualKeyCode: 37 });
-  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowLeft", code: "ArrowLeft", windowsVirtualKeyCode: 37 });
-  const title3 = await evaluate(send, "document.getElementById('visor-titulo').textContent");
-  check(title3 === "Dock con ampliación", `la flecha izquierda no retrocedió: ${title3}`);
-
+  const title2 = await evaluate(send, "document.getElementById('visor-titulo').textContent + '|' + document.getElementById('visor-cuenta').textContent");
+  check(title2.startsWith("App Store y Acerca de") && title2.endsWith("2 de 4"), `la flecha no avanzó entre las cuatro: ${title2}`);
   await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
   await new Promise((r) => setTimeout(r, 100));
-  const closed = await evaluate(send, "document.getElementById('visor').open");
-  const back = await evaluate(send, "document.activeElement?.closest('figure')?.id || document.activeElement?.className");
-  check(closed === false, "Escape no cerró el visor");
-  check(back === "dock", `el foco no volvió al dock: ${back}`);
+  const back = await evaluate(send, "document.getElementById('visor').open === false && document.activeElement?.closest('figure')?.id");
+  check(back === "escritorio", `el foco no volvió al escritorio: ${back}`);
 
   await evaluate(send, "window.scrollTo(0, 0)");
   await evaluate(send, "document.querySelector('#escritorio .shot').click()");
@@ -352,7 +345,7 @@ try {
   const ajustesBack = await evaluate(send, "document.getElementById('visor').open === false && document.activeElement?.closest('figure')?.id");
   check(ajustesBack === "ajustes-autor", `el foco no volvió a Ajustes: ${ajustesBack}`);
 
-  await evaluate(send, "document.querySelector('#menu .shot').click()");
+  await evaluate(send, "document.querySelector('#tienda-autor .shot').click()");
   await new Promise((r) => setTimeout(r, 100));
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: 8, y: 8, button: "left", clickCount: 1 });
   await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: 8, y: 8, button: "left", clickCount: 1 });
@@ -384,11 +377,17 @@ try {
   check(mobileLauncher.title === "Lanzador de aplicaciones" && mobileLauncher.fits, `el visor móvil del lanzador no cabe: ${JSON.stringify(mobileLauncher)}`);
   await shoot(send, "movil_visor_lanzador.png");
   await evaluate(send, "document.getElementById('visor').close()");
-  await evaluate(send, "document.querySelector('#launchpad .shot').click()");
-  await new Promise((r) => setTimeout(r, 200));
-  const mobileOpen = await evaluate(send, "document.getElementById('visor').open && document.getElementById('visor-titulo').textContent");
-  check(mobileOpen === "Launchpad", `el visor móvil no mostró Launchpad: ${mobileOpen}`);
-  await shoot(send, "movil_claro_visor.png");
+  await send("Emulation.setDeviceMetricsOverride", { width: 390, height: 1500, deviceScaleFactor: 1, mobile: true });
+  const mobileTop = await evaluate(send, "document.getElementById('tienda-autor').getBoundingClientRect().top + window.scrollY");
+  const mobileBottom = await evaluate(send, "document.getElementById('lanzador-autor').getBoundingClientRect().bottom + window.scrollY");
+  await send("Emulation.setDeviceMetricsOverride", {
+    width: 390,
+    height: Math.min(2200, Math.ceil(mobileBottom - mobileTop + 140)),
+    deviceScaleFactor: 1,
+    mobile: true,
+  });
+  await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(mobileTop) - 60)})`);
+  await shoot(send, "movil_galeria_reales.png");
 
   await prepare(send, { width: 390, height: 844, mobile: true, scheme: "dark" });
   await shootHero(send, "movil_oscuro_hero.png", 390, true);

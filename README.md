@@ -10,9 +10,7 @@ El repositorio de la aplicación no es público y no se enlaza desde aquí. No h
 
 ## Procedencia
 
-`assets/autor/` son cuatro capturas reales facilitadas por el autor, copiadas byte a byte: el escritorio, la tienda, Ajustes del Sistema y el lanzador. La página las muestra y no redistribuye el fondo ni el tema de esa instalación. No se etiquetan como la demostración aislada. El texto no transcribe los datos de equipo de Ajustes ni los convierte en requisitos. Los iconos del lanzador no se dan por probados.
-
-`assets/demo/` son los bytes originales de una ejecución en una sesión X11 aislada (cuenta Demo, tema alternativo WhiteSur-Light, fondo generado). No equivalen a las capturas del autor. No se recomprimen ni se retoca la interfaz.
+`assets/autor/` son las cuatro capturas reales facilitadas por el autor, copiadas byte a byte: el escritorio, la tienda, Ajustes del Sistema y el lanzador. No hay otras imágenes. La página no redistribuye el fondo ni el tema de esa instalación, no transcribe los datos de equipo de Ajustes y no da por probados los iconos del lanzador.
 
 Los SHA-256 viven en `tests/check_site.py`.
 

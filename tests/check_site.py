@@ -12,7 +12,6 @@ from html.parser import HTMLParser
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
-DEMO = ROOT / "assets" / "demo"
 AUTOR = ROOT / "assets" / "autor"
 
 # SHA-256 de los PNG originales. Cualquier recomprimido o retoque rompe la prueba.
@@ -21,18 +20,6 @@ AUTOR_FILES = {
     "tienda-acerca.png": ("439cc60db187980ef319f7c52e3c2cb6bf0c61ad82fdef04e25669fb027d651e", 1919, 1079),
     "ajustes-general.png": ("79f251efa3b975bc99b260666715fd6e666f6bfb1e1f66ad9b37990aef00612c", 913, 676),
     "lanzador.png": ("4c0b17d709fd010d33b2c9f2442b4aeefed764aa12dec99a7d42b76ecb600c4b", 1915, 985),
-}
-HASHES = {
-    "dock-ampliacion.png": "c49c286934214b00c77b87563898ee2751c9782aab27cbc712912139dc4ef3f9",
-    "menu-manzana.png": "8f2bf4039d66e826d4acbe9f28ee464591cf86f5d231c6552a7ac322df57286e",
-    "acerca-de.png": "b5db49f2e74367e0a301164d96e1ff39c3d61ec87ae89667658b8141e5289b62",
-    "apariencia.png": "b9927267baba74653cce8ad6bc70b19cd3b886bd4e1242b0b53b9ecf4dc4b5cb",
-    "teclado.png": "fedfc9d735a7bea528f4029998ea3373e5543644a0486efd99b94a788e493622",
-    "launchpad.png": "87d3589ae39f0eabc995b5cb92ac544becda6fd5be86864f8ae9c82c674d8aad",
-    "spotlight.png": "9b267140a43d3b8b38aea3e788347fc7ddaa494c17a62c28bf1ed6d1917cfb3a",
-    "centro-de-control.png": "921da5a611aebb317dd11bec318ac05077134d6e309d238d31981750fb948da1",
-    "app-store.png": "fc302e12290f10ed4fe9e2304d5b914d9ae804d2d23ea23e810d32f06de72b7e",
-    "vista-rapida.png": "642ac60888156c418ab81f6a1ac8fb15b86eb6819e99686680b7f01a55d5810a",
 }
 
 ALLOWED_URLS = {
@@ -59,15 +46,11 @@ REQUIRED = [
     "ImageMagick",
     "rofi",
     "MacTahoe-Light-solid",
-    "WhiteSur-Light",
-    "Demostración",
     "picom",
     "unittest",
     "Waydroid",
     "PhotoCraft",
-    "nota-demo.txt",
     "Documents",
-    "cuenta Demo",
     "No es un sistema operativo autónomo",
     "No hay imagen ISO ni descarga",
     "no es público",
@@ -78,15 +61,14 @@ REQUIRED = [
     "#zalmann-os",
     "#sopa-ia",
     "#jerry",
-    "1920",
-    "1080",
     "ArtCraft",
     "cristal en vivo",
     "«pronto»",
     "Captura real facilitada por el autor",
     "1919",
     "1079",
-    "1 de 14",
+    "1 de 4",
+    "Hay cuatro vistas",
     "Ajustes del sistema — captura real facilitada por el autor",
     "Lanzador de aplicaciones — captura real facilitada por el autor",
     "botón Abrir",
@@ -115,6 +97,16 @@ FORBIDDEN = [
     "6 h 15",
     "26.04",
     "2.70",
+    "WhiteSur",
+    "cuenta Demo",
+    "Demostración",
+    "fondo generado",
+    "nota-demo",
+    "assets/demo",
+    "catorce",
+    "1 de 14",
+    "Obtener",
+    "Flathub",
 ]
 
 
@@ -193,8 +185,8 @@ def main() -> int:
         errors.append("falta el enlace de saltar al contenido")
     if not page.dialog:
         errors.append("falta el diálogo de la galería")
-    if page.buttons < 14:
-        errors.append(f"solo hay {page.buttons} botones; hacen falta 14 vistas ampliables")
+    if page.buttons != 7:
+        errors.append(f"hay {page.buttons} botones; se esperan 4 vistas y los controles del visor")
 
     for needed in (
         "que-es",
@@ -204,16 +196,6 @@ def main() -> int:
         "enlaces",
         "contenido",
         "visor",
-        "dock",
-        "menu",
-        "acerca",
-        "apariencia",
-        "teclado",
-        "launchpad",
-        "spotlight",
-        "centro-de-control",
-        "app-store",
-        "vista-rapida",
         "escritorio",
         "tienda-autor",
         "ajustes-autor",
@@ -239,18 +221,17 @@ def main() -> int:
         if href not in ALLOWED_URLS:
             errors.append(f"enlace no verificado: {href}")
 
-    demo_srcs = [src for src in page.srcs if src.startswith("assets/demo/")]
     autor_srcs = [src for src in page.srcs if src.startswith("assets/autor/")]
     if re.search(r"jerry", html.replace("https://ardu01.github.io/proyectos/#jerry", "")):
         errors.append("el texto publica el nombre del equipo")
 
     if autor_srcs != [f"assets/autor/{name}" for name in AUTOR_FILES]:
         errors.append(f"las capturas del autor no van en orden: {autor_srcs}")
-    if demo_srcs != [f"assets/demo/{name}" for name in HASHES]:
-        errors.append(f"la demostración no lista las 10 capturas en orden: {demo_srcs}")
+    if any(src.startswith("assets/demo/") for src in page.srcs):
+        errors.append("sigue habiendo imágenes de la demostración")
 
     for src, alt in page.alts:
-        if (src.startswith("assets/demo/") or src.startswith("assets/autor/")) and (alt is None or len(alt.strip()) < 20):
+        if src.startswith("assets/autor/") and (alt is None or len(alt.strip()) < 20):
             errors.append(f"alt insuficiente en {src}")
 
     def figure_html(figure_id: str) -> str:
@@ -278,24 +259,11 @@ def main() -> int:
     if re.search(r"<link[^>]+stylesheet", html):
         errors.append("hay una hoja de estilo externa")
 
-    seen = {path.name for path in DEMO.glob("*.png")}
-    if seen != set(HASHES):
-        errors.append(f"PNG inesperados en assets/demo: {sorted(seen)}")
+    if (ROOT / "assets" / "demo").exists():
+        errors.append("assets/demo sigue en el sitio")
     seen_autor = {path.name for path in AUTOR.glob("*.png")}
     if seen_autor != set(AUTOR_FILES):
         errors.append(f"PNG inesperados en assets/autor: {sorted(seen_autor)}")
-
-    for name, digest in HASHES.items():
-        path = DEMO / name
-        blob = path.read_bytes()
-        found = hashlib.sha256(blob).hexdigest()
-        if found != digest:
-            errors.append(f"bytes alterados en {name}")
-        width, height = png_size(path)
-        if (width, height) != (1920, 1080):
-            errors.append(f"{name} mide {width}x{height}")
-        if b"tEXt" in blob and b"xwdump" not in blob:
-            errors.append(f"{name} cambió el comentario original")
 
     for name, (digest, expect_w, expect_h) in AUTOR_FILES.items():
         path = AUTOR / name
@@ -312,7 +280,7 @@ def main() -> int:
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
-    print(f"ok: {len(AUTOR_FILES)} capturas del autor y {len(HASHES)} de demostración, bytes intactos")
+    print(f"ok: {len(AUTOR_FILES)} capturas reales, bytes intactos, sin demostración")
     return 0
 
 
