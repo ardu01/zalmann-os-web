@@ -235,6 +235,7 @@ try {
   check(!lightText.includes("github.com/ardu01/zalmann-os"), "el texto visible enlaza el repositorio no verificado");
   check(lightText.includes("Captura real facilitada por el autor"), "falta la procedencia del autor");
   check(!lightText.includes("no se ha recuperado"), "sigue el aviso de captura pendiente");
+  check(!/ARDU|i5-6400|26\.04|980 GB|jerry/.test(lightText), "el texto visible publica datos del equipo");
   const bg = await evaluate(send, "getComputedStyle(document.body).backgroundColor");
   check(bg === "rgb(243, 240, 232)", `fondo claro inesperado: ${bg}`);
   await shootHero(send, "desktop_claro_hero.png", 1440, false);
@@ -243,6 +244,9 @@ try {
   const realTop = await evaluate(send, "document.getElementById('tienda-autor').getBoundingClientRect().top + window.scrollY");
   await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(realTop) - 80)})`);
   await shoot(send, "desktop_claro_autor_tienda.png");
+  const ajustesTop = await evaluate(send, "document.getElementById('ajustes-autor').getBoundingClientRect().top + window.scrollY");
+  await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(ajustesTop) - 90)})`);
+  await shoot(send, "desktop_claro_autor_ajustes.png");
   const dockTop = await evaluate(send, "document.querySelector('#dock').getBoundingClientRect().top + window.scrollY");
   await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(dockTop) - 90)})`);
   await shoot(send, "desktop_claro_galeria.png");
@@ -314,6 +318,40 @@ try {
   await shoot(send, "desktop_claro_visor_tienda.png");
   await evaluate(send, "document.getElementById('visor').close()");
 
+  await evaluate(send, "window.scrollTo(0, 0)");
+  await evaluate(send, "document.querySelector('#ajustes-autor .shot').focus()");
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13, text: "\r" });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Enter", code: "Enter", windowsVirtualKeyCode: 13, nativeVirtualKeyCode: 13 });
+  await new Promise((r) => setTimeout(r, 200));
+  const ajustesVisor = await evaluate(send, `({
+    title: document.getElementById('visor-titulo').textContent,
+    text: document.getElementById('visor-texto').textContent,
+    width: document.getElementById('visor-img').naturalWidth,
+    height: document.getElementById('visor-img').naturalHeight,
+    ratio: (() => { const r = document.getElementById('visor-img').getBoundingClientRect(); return r.width / r.height; })()
+  })`);
+  check(ajustesVisor.title === "Ajustes del sistema" && ajustesVisor.width === 913 && ajustesVisor.height === 676, `el visor no abrió Ajustes intacto: ${JSON.stringify(ajustesVisor)}`);
+  check(ajustesVisor.text.includes("Ajustes del sistema — captura real facilitada por el autor"), "falta el pie de Ajustes");
+  check(!/ARDU|jerry|26\.04|i5-6400/.test(ajustesVisor.text), "el visor de Ajustes transcribe el equipo");
+  check(Math.abs(ajustesVisor.ratio - (913 / 676)) < 0.03, `el visor deforma Ajustes: ${ajustesVisor.ratio}`);
+  await shoot(send, "desktop_claro_visor_ajustes.png");
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "ArrowRight", code: "ArrowRight", windowsVirtualKeyCode: 39 });
+  const lanzadorVisor = await evaluate(send, `({
+    title: document.getElementById('visor-titulo').textContent,
+    text: document.getElementById('visor-texto').textContent,
+    width: document.getElementById('visor-img').naturalWidth,
+    height: document.getElementById('visor-img').naturalHeight
+  })`);
+  check(lanzadorVisor.title === "Lanzador de aplicaciones" && lanzadorVisor.width === 1915 && lanzadorVisor.height === 985, `el visor no abrió el lanzador: ${JSON.stringify(lanzadorVisor)}`);
+  check(lanzadorVisor.text.includes("Lanzador de aplicaciones — captura real facilitada por el autor") && lanzadorVisor.text.includes("no acredita"), "falta el pie del lanzador");
+  await shoot(send, "desktop_claro_visor_lanzador.png");
+  await send("Input.dispatchKeyEvent", { type: "keyDown", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await send("Input.dispatchKeyEvent", { type: "keyUp", key: "Escape", code: "Escape", windowsVirtualKeyCode: 27 });
+  await new Promise((r) => setTimeout(r, 100));
+  const ajustesBack = await evaluate(send, "document.getElementById('visor').open === false && document.activeElement?.closest('figure')?.id");
+  check(ajustesBack === "ajustes-autor", `el foco no volvió a Ajustes: ${ajustesBack}`);
+
   await evaluate(send, "document.querySelector('#menu .shot').click()");
   await new Promise((r) => setTimeout(r, 100));
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: 8, y: 8, button: "left", clickCount: 1 });
@@ -334,6 +372,18 @@ try {
   await send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const overflow = await evaluate(send, "document.documentElement.scrollWidth > document.documentElement.clientWidth + 1");
   check(!overflow, "la página móvil desborda en horizontal");
+  const mobileAjustes = await evaluate(send, "document.getElementById('ajustes-autor').getBoundingClientRect().top + window.scrollY");
+  await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(mobileAjustes) - 70)})`);
+  await shoot(send, "movil_autor_galeria.png");
+  await evaluate(send, "document.querySelector('#lanzador-autor .shot').click()");
+  await new Promise((r) => setTimeout(r, 200));
+  const mobileLauncher = await evaluate(send, `({
+    title: document.getElementById('visor-titulo').textContent,
+    fits: document.getElementById('visor-img').getBoundingClientRect().width <= window.innerWidth
+  })`);
+  check(mobileLauncher.title === "Lanzador de aplicaciones" && mobileLauncher.fits, `el visor móvil del lanzador no cabe: ${JSON.stringify(mobileLauncher)}`);
+  await shoot(send, "movil_visor_lanzador.png");
+  await evaluate(send, "document.getElementById('visor').close()");
   await evaluate(send, "document.querySelector('#launchpad .shot').click()");
   await new Promise((r) => setTimeout(r, 200));
   const mobileOpen = await evaluate(send, "document.getElementById('visor').open && document.getElementById('visor-titulo').textContent");

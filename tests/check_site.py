@@ -16,9 +16,11 @@ DEMO = ROOT / "assets" / "demo"
 AUTOR = ROOT / "assets" / "autor"
 
 # SHA-256 de los PNG originales. Cualquier recomprimido o retoque rompe la prueba.
-AUTOR_HASHES = {
-    "escritorio.png": "77a6fd2414db86c9fcee7822680004ba8b5cf29e3f4f721234def691dbff8d28",
-    "tienda-acerca.png": "439cc60db187980ef319f7c52e3c2cb6bf0c61ad82fdef04e25669fb027d651e",
+AUTOR_FILES = {
+    "escritorio.png": ("77a6fd2414db86c9fcee7822680004ba8b5cf29e3f4f721234def691dbff8d28", 1919, 1079),
+    "tienda-acerca.png": ("439cc60db187980ef319f7c52e3c2cb6bf0c61ad82fdef04e25669fb027d651e", 1919, 1079),
+    "ajustes-general.png": ("79f251efa3b975bc99b260666715fd6e666f6bfb1e1f66ad9b37990aef00612c", 913, 676),
+    "lanzador.png": ("4c0b17d709fd010d33b2c9f2442b4aeefed764aa12dec99a7d42b76ecb600c4b", 1915, 985),
 }
 HASHES = {
     "dock-ampliacion.png": "c49c286934214b00c77b87563898ee2751c9782aab27cbc712912139dc4ef3f9",
@@ -84,7 +86,9 @@ REQUIRED = [
     "Captura real facilitada por el autor",
     "1919",
     "1079",
-    "1 de 12",
+    "1 de 14",
+    "Ajustes del sistema — captura real facilitada por el autor",
+    "Lanzador de aplicaciones — captura real facilitada por el autor",
     "botón Abrir",
 ]
 
@@ -103,6 +107,14 @@ FORBIDDEN = [
     "diseño propio hasta",
     "500 GB",
     "500GB",
+    "ARDU",
+    "i5-6400",
+    "Skylake",
+    "980 GB",
+    "588 GB",
+    "6 h 15",
+    "26.04",
+    "2.70",
 ]
 
 
@@ -181,8 +193,8 @@ def main() -> int:
         errors.append("falta el enlace de saltar al contenido")
     if not page.dialog:
         errors.append("falta el diálogo de la galería")
-    if page.buttons < 12:
-        errors.append(f"solo hay {page.buttons} botones; hacen falta 12 vistas ampliables")
+    if page.buttons < 14:
+        errors.append(f"solo hay {page.buttons} botones; hacen falta 14 vistas ampliables")
 
     for needed in (
         "que-es",
@@ -204,6 +216,8 @@ def main() -> int:
         "vista-rapida",
         "escritorio",
         "tienda-autor",
+        "ajustes-autor",
+        "lanzador-autor",
     ):
         if needed not in page.ids:
             errors.append(f"falta el id #{needed}")
@@ -227,7 +241,10 @@ def main() -> int:
 
     demo_srcs = [src for src in page.srcs if src.startswith("assets/demo/")]
     autor_srcs = [src for src in page.srcs if src.startswith("assets/autor/")]
-    if autor_srcs != [f"assets/autor/{name}" for name in AUTOR_HASHES]:
+    if re.search(r"jerry", html.replace("https://ardu01.github.io/proyectos/#jerry", "")):
+        errors.append("el texto publica el nombre del equipo")
+
+    if autor_srcs != [f"assets/autor/{name}" for name in AUTOR_FILES]:
         errors.append(f"las capturas del autor no van en orden: {autor_srcs}")
     if demo_srcs != [f"assets/demo/{name}" for name in HASHES]:
         errors.append(f"la demostración no lista las 10 capturas en orden: {demo_srcs}")
@@ -240,13 +257,13 @@ def main() -> int:
         start = html.index(f'id="{figure_id}"')
         return html[start:html.index("</figure>", start)]
 
-    for figure_id in ("escritorio", "tienda-autor"):
+    for figure_id in ("escritorio", "tienda-autor", "ajustes-autor", "lanzador-autor"):
         chunk = figure_html(figure_id)
-        if "Captura real facilitada por el autor" not in chunk:
+        if "Captura real facilitada por el autor" not in chunk and "captura real facilitada por el autor" not in chunk:
             errors.append(f"#{figure_id} no declara la procedencia del autor")
-        for banned in ("WhiteSur", "cuenta Demo", "picom", "Demostración"):
+        for banned in ("WhiteSur", "cuenta Demo", "picom", "Demostración", "ARDU", "jerry", "i5-6400", "26.04"):
             if banned in chunk:
-                errors.append(f"#{figure_id} mezcla la captura del autor con la demostración ({banned})")
+                errors.append(f"#{figure_id} mezcla la captura del autor con datos que no van en el texto ({banned})")
 
     if page.imgs_without_dims:
         errors.append("hay imágenes sin width y height")
@@ -265,7 +282,7 @@ def main() -> int:
     if seen != set(HASHES):
         errors.append(f"PNG inesperados en assets/demo: {sorted(seen)}")
     seen_autor = {path.name for path in AUTOR.glob("*.png")}
-    if seen_autor != set(AUTOR_HASHES):
+    if seen_autor != set(AUTOR_FILES):
         errors.append(f"PNG inesperados en assets/autor: {sorted(seen_autor)}")
 
     for name, digest in HASHES.items():
@@ -280,14 +297,14 @@ def main() -> int:
         if b"tEXt" in blob and b"xwdump" not in blob:
             errors.append(f"{name} cambió el comentario original")
 
-    for name, digest in AUTOR_HASHES.items():
+    for name, (digest, expect_w, expect_h) in AUTOR_FILES.items():
         path = AUTOR / name
         blob = path.read_bytes()
         found = hashlib.sha256(blob).hexdigest()
         if found != digest:
             errors.append(f"bytes alterados en {name}")
         width, height = png_size(path)
-        if (width, height) != (1919, 1079):
+        if (width, height) != (expect_w, expect_h):
             errors.append(f"{name} mide {width}x{height}")
         if b"tEXt" in blob or b"iTXt" in blob or b"zTXt" in blob:
             errors.append(f"{name} incorpora metadatos de texto")
@@ -295,7 +312,7 @@ def main() -> int:
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
-    print(f"ok: {len(AUTOR_HASHES)} capturas del autor y {len(HASHES)} de demostración, bytes intactos")
+    print(f"ok: {len(AUTOR_FILES)} capturas del autor y {len(HASHES)} de demostración, bytes intactos")
     return 0
 
 
