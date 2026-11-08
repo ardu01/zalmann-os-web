@@ -28,6 +28,10 @@ Esta web forma parte del ecosistema tecnológico de **Ardu Solutions**.
 
 **[Visitar la web oficial de Zalmann OS](https://ardu01.github.io/zalmann-os-web/)**
 
+El catálogo de proyectos está en https://ardu01.github.io/proyectos/#zalmann-os.
+
+El repositorio de la aplicación no es público y no se enlaza desde aquí. No hay ISO ni descarga. GitHub Pages publica solo la rama `main`.
+
 ## Tecnologías
 
 | Tecnología | Función |
@@ -39,9 +43,11 @@ Esta web forma parte del ecosistema tecnológico de **Ardu Solutions**.
 
 ## Estructura del repositorio
 
-```text id="m82m1j"
+```text
 zalmann-os-web/
 │
+├── assets/autor/
+├── tests/
 ├── index.html
 ├── README.md
 └── .nojekyll
@@ -49,22 +55,31 @@ zalmann-os-web/
 
 El archivo `index.html` contiene la página principal y `.nojekyll` evita el procesamiento automático mediante Jekyll.
 
+`assets/autor/` son las cuatro capturas reales facilitadas por el autor, copiadas byte a byte: el escritorio, la tienda, Ajustes del Sistema y el lanzador. No hay otras imágenes. La página no redistribuye el fondo ni el tema de esa instalación, no transcribe los datos de equipo de Ajustes y no da por probados los iconos del lanzador. Los SHA-256 viven en `tests/check_site.py`.
+
 ## Ejecución local
 
 Clonar el repositorio:
 
-```bash id="a46goh"
+```bash
 git clone https://github.com/ardu01/zalmann-os-web.git
 cd zalmann-os-web
 ```
 
 Abrir `index.html` en un navegador o utilizar un servidor HTTP local:
 
-```bash id="eb7ztx"
+```bash
 python3 -m http.server 8000
 ```
 
 Acceder a `http://localhost:8000`.
+
+Comprobar la página:
+
+```bash
+python3 tests/check_site.py
+node tests/browser_check.mjs
+```
 
 ## Proyecto principal
 
