@@ -1,7 +1,100 @@
-# Zalmann OS
+# Zalmann OS | Official Website
 
-Landing pública de Zalmann OS.
+**Sitio web oficial de Zalmann OS, un proyecto de entorno de escritorio Linux desarrollado por Ardu Solutions.**
 
-Sitio: https://ardu01.github.io/zalmann-os-web/
+[![Website](https://img.shields.io/badge/Website-Online-16A34A?style=flat-square)](https://ardu01.github.io/zalmann-os-web/)
+![HTML5](https://img.shields.io/badge/HTML5-Web-E34F26?style=flat-square&logo=html5&logoColor=white)
+![GitHub Pages](https://img.shields.io/badge/Hosting-GitHub_Pages-222222?style=flat-square&logo=github)
+![Status](https://img.shields.io/badge/Status-Active-2563EB?style=flat-square)
 
-El catálogo de proyectos está en https://ardu01.github.io/proyectos/. El código del sistema es privado y no se enlaza desde aquí.
+---
+
+## Descripción
+
+**Zalmann OS Web** es la página oficial de presentación del proyecto Zalmann OS.
+
+Su objetivo es ofrecer un espacio público donde conocer el sistema, su filosofía de diseño y su evolución.
+
+Zalmann OS es un entorno de escritorio desarrollado sobre Ubuntu y XFCE que incorpora componentes personalizados, herramientas propias y una experiencia visual inspirada en macOS.
+
+Esta web forma parte del ecosistema tecnológico de **Ardu Solutions**.
+
+**Desarrollador:** Miguel Rodríguez Saiz  
+**Organización:** Ardu Solutions  
+**Categoría:** Desarrollo Web / Presentación de Producto  
+**Publicación:** GitHub Pages
+
+## Acceder a la web
+
+**[Visitar la web oficial de Zalmann OS](https://ardu01.github.io/zalmann-os-web/)**
+
+## Tecnologías
+
+| Tecnología | Función |
+|---|---|
+| HTML5 | Estructura del sitio |
+| GitHub Pages | Alojamiento y publicación |
+| Git | Control de versiones |
+| GitHub | Gestión del repositorio |
+
+## Estructura del repositorio
+
+```text id="m82m1j"
+zalmann-os-web/
+│
+├── index.html
+├── README.md
+└── .nojekyll
+```
+
+El archivo `index.html` contiene la página principal y `.nojekyll` evita el procesamiento automático mediante Jekyll.
+
+## Ejecución local
+
+Clonar el repositorio:
+
+```bash id="a46goh"
+git clone https://github.com/ardu01/zalmann-os-web.git
+cd zalmann-os-web
+```
+
+Abrir `index.html` en un navegador o utilizar un servidor HTTP local:
+
+```bash id="eb7ztx"
+python3 -m http.server 8000
+```
+
+Acceder a `http://localhost:8000`.
+
+## Proyecto principal
+
+Esta web presenta **Zalmann OS**, un proyecto de escritorio Linux en desarrollo experimental.
+
+La página web y el entorno de escritorio son proyectos independientes: este repositorio contiene únicamente el sitio de presentación.
+
+Para consultar otros desarrollos relacionados, visitar el portfolio de Ardu Solutions.
+
+## Autor
+
+**Miguel Rodríguez Saiz**
+
+Diseño y desarrollo del proyecto.
+
+**Ardu Solutions** — Desarrollo de software, sistemas y soluciones tecnológicas.
+
+- **Web oficial:** https://ardu01.github.io/zalmann-os-web/
+- **Portfolio:** https://ardu01.github.io/proyectos/
+- **Ardu Solutions:** https://ardusolutions.pages.dev/
+- **GitHub:** https://github.com/ardu01
+
+## Licencia
+
+Este repositorio no declara actualmente una licencia de software.
+
+La publicación del código no implica automáticamente autorización para su modificación, redistribución o explotación comercial.
+
+---
+
+**© 2026 Miguel Rodríguez Saiz · Ardu Solutions**
+
+*Zalmann OS — A new desktop experience, built on Linux.*
