@@ -163,6 +163,34 @@ async function prepare(send, { width, height, mobile, scheme }) {
   if (broken.length) throw new Error(`imágenes rotas: ${broken.join(", ")}`);
 }
 
+async function shootHero(send, name, width, mobile) {
+  await send("Emulation.setDeviceMetricsOverride", {
+    width,
+    height: 1500,
+    deviceScaleFactor: 1,
+    mobile,
+  });
+  await evaluate(send, "window.scrollTo(0, 0)");
+  const bottom = await evaluate(send, "Math.ceil(document.getElementById('escritorio').getBoundingClientRect().bottom + window.scrollY + 36)");
+  const height = Math.min(Math.max(bottom, mobile ? 844 : 980), 1600);
+  await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile });
+  await evaluate(send, "new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))");
+  const framed = await evaluate(send, `(() => {
+    const img = document.querySelector("#escritorio img");
+    const rect = img.getBoundingClientRect();
+    const title = document.querySelector("h1").getBoundingClientRect();
+    const ratio = rect.width / rect.height;
+    return {
+      full: rect.top >= 0 && rect.bottom <= window.innerHeight + 1 && rect.width > 240,
+      ratio: Math.abs(ratio - (1919 / 1079)) < 0.03,
+      overlap: !(rect.bottom < title.top || rect.top > title.bottom),
+      natural: img.naturalWidth,
+    };
+  })()`);
+  check(framed.full && framed.ratio && !framed.overlap && framed.natural === 1919, `${name} no muestra el escritorio entero y sin deformar (${JSON.stringify(framed)})`);
+  await shoot(send, name);
+}
+
 async function shoot(send, name) {
   const shot = await send("Page.captureScreenshot", { format: "png", fromSurface: true });
   const file = path.join(outDir, name);
@@ -205,11 +233,16 @@ try {
   check(lightText.includes("En desarrollo"), "el texto visible no incluye En desarrollo");
   check(lightText.includes("Demostración"), "el texto visible no incluye Demostración");
   check(!lightText.includes("github.com/ardu01/zalmann-os"), "el texto visible enlaza el repositorio no verificado");
+  check(lightText.includes("Captura real facilitada por el autor"), "falta la procedencia del autor");
+  check(!lightText.includes("no se ha recuperado"), "sigue el aviso de captura pendiente");
   const bg = await evaluate(send, "getComputedStyle(document.body).backgroundColor");
   check(bg === "rgb(243, 240, 232)", `fondo claro inesperado: ${bg}`);
-  await shoot(send, "desktop_claro_hero.png");
+  await shootHero(send, "desktop_claro_hero.png", 1440, false);
   await shootFull(send, "desktop_claro_completo.png", 1440, false);
   await send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 900, deviceScaleFactor: 1, mobile: false });
+  const realTop = await evaluate(send, "document.getElementById('tienda-autor').getBoundingClientRect().top + window.scrollY");
+  await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(realTop) - 80)})`);
+  await shoot(send, "desktop_claro_autor_tienda.png");
   const dockTop = await evaluate(send, "document.querySelector('#dock').getBoundingClientRect().top + window.scrollY");
   await evaluate(send, `window.scrollTo(0, ${Math.max(0, Math.round(dockTop) - 90)})`);
   await shoot(send, "desktop_claro_galeria.png");
@@ -250,6 +283,37 @@ try {
   check(closed === false, "Escape no cerró el visor");
   check(back === "dock", `el foco no volvió al dock: ${back}`);
 
+  await evaluate(send, "window.scrollTo(0, 0)");
+  await evaluate(send, "document.querySelector('#escritorio .shot').click()");
+  await new Promise((r) => setTimeout(r, 200));
+  const realVisor = await evaluate(send, `({
+    open: document.getElementById('visor').open,
+    title: document.getElementById('visor-titulo').textContent,
+    procedencia: document.getElementById('visor-procedencia').textContent,
+    text: document.getElementById('visor-texto').textContent,
+    width: document.getElementById('visor-img').naturalWidth,
+    ratio: (() => { const r = document.getElementById('visor-img').getBoundingClientRect(); return r.width / r.height; })()
+  })`);
+  check(realVisor.open && realVisor.title === "Escritorio", `el visor no abrió el escritorio real: ${realVisor.title}`);
+  check(realVisor.procedencia === "Captura real facilitada por el autor", `procedencia del visor: ${realVisor.procedencia}`);
+  check(!realVisor.text.includes("WhiteSur") && realVisor.width === 1919, "el visor del escritorio no conserva la captura del autor");
+  check(Math.abs(realVisor.ratio - (1919 / 1079)) < 0.03, `el visor deforma el escritorio: ${realVisor.ratio}`);
+  await shoot(send, "desktop_claro_visor_escritorio.png");
+  await evaluate(send, "document.getElementById('visor').close()");
+  await evaluate(send, "document.querySelector('#tienda-autor .shot').click()");
+  await new Promise((r) => setTimeout(r, 200));
+  const storeVisor = await evaluate(send, `({
+    title: document.getElementById('visor-titulo').textContent,
+    procedencia: document.getElementById('visor-procedencia').textContent,
+    text: document.getElementById('visor-texto').textContent,
+    width: document.getElementById('visor-img').naturalWidth
+  })`);
+  check(storeVisor.title === "App Store y Acerca de" && storeVisor.width === 1919, `el visor no abrió la tienda real: ${JSON.stringify(storeVisor)}`);
+  check(storeVisor.procedencia === "Captura real facilitada por el autor" && !storeVisor.text.includes("WhiteSur"), "la tienda real queda etiquetada como demostración");
+  check(storeVisor.text.includes("Abrir") && storeVisor.text.includes("no acredita"), "falta el límite del botón Abrir");
+  await shoot(send, "desktop_claro_visor_tienda.png");
+  await evaluate(send, "document.getElementById('visor').close()");
+
   await evaluate(send, "document.querySelector('#menu .shot').click()");
   await new Promise((r) => setTimeout(r, 100));
   await send("Input.dispatchMouseEvent", { type: "mousePressed", x: 8, y: 8, button: "left", clickCount: 1 });
@@ -261,11 +325,11 @@ try {
   await prepare(send, { width: 1440, height: 900, mobile: false, scheme: "dark" });
   const darkBg = await evaluate(send, "getComputedStyle(document.body).backgroundColor");
   check(darkBg === "rgb(19, 18, 16)", `fondo oscuro inesperado: ${darkBg}`);
-  await shoot(send, "desktop_oscuro_hero.png");
+  await shootHero(send, "desktop_oscuro_hero.png", 1440, false);
   await shootFull(send, "desktop_oscuro_completo.png", 1440, false);
 
   await prepare(send, { width: 390, height: 844, mobile: true, scheme: "light" });
-  await shoot(send, "movil_claro_hero.png");
+  await shootHero(send, "movil_claro_hero.png", 390, true);
   await shootFull(send, "movil_claro_completo.png", 390, true);
   await send("Emulation.setDeviceMetricsOverride", { width: 390, height: 844, deviceScaleFactor: 1, mobile: true });
   const overflow = await evaluate(send, "document.documentElement.scrollWidth > document.documentElement.clientWidth + 1");
@@ -277,7 +341,7 @@ try {
   await shoot(send, "movil_claro_visor.png");
 
   await prepare(send, { width: 390, height: 844, mobile: true, scheme: "dark" });
-  await shoot(send, "movil_oscuro_hero.png");
+  await shootHero(send, "movil_oscuro_hero.png", 390, true);
 } finally {
   chrome.kill("SIGKILL");
   server.close();

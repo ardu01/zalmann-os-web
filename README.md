@@ -8,7 +8,13 @@ El catálogo de proyectos está en https://ardu01.github.io/proyectos/#zalmann-o
 
 El repositorio de la aplicación no es público y no se enlaza desde aquí. No hay ISO ni descarga.
 
-Las imágenes de `assets/demo/` son los bytes originales de una ejecución real en una sesión X11 aislada (cuenta Demo, tema alternativo WhiteSur-Light, fondo generado). No son la instalación de Miguel ni el aspecto final. No se recomprimen ni se retoca la interfaz.
+## Procedencia
+
+`assets/autor/escritorio.png` y `assets/autor/tienda-acerca.png` son capturas reales facilitadas por el autor, copiadas byte a byte. La página las muestra y no redistribuye el fondo ni el tema de esa instalación. No se etiquetan como la demostración aislada.
+
+`assets/demo/` son los bytes originales de una ejecución en una sesión X11 aislada (cuenta Demo, tema alternativo WhiteSur-Light, fondo generado). No equivalen a las capturas del autor. No se recomprimen ni se retoca la interfaz.
+
+Los SHA-256 viven en `tests/check_site.py`.
 
 GitHub Pages construye el sitio desde la rama `main`. Una rama de revisión no publica la página. Fusionar con `main` sí la publica.
 

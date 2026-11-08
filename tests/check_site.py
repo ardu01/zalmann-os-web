@@ -13,8 +13,13 @@ from html.parser import HTMLParser
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 INDEX = ROOT / "index.html"
 DEMO = ROOT / "assets" / "demo"
+AUTOR = ROOT / "assets" / "autor"
 
 # SHA-256 de los PNG originales. Cualquier recomprimido o retoque rompe la prueba.
+AUTOR_HASHES = {
+    "escritorio.png": "77a6fd2414db86c9fcee7822680004ba8b5cf29e3f4f721234def691dbff8d28",
+    "tienda-acerca.png": "439cc60db187980ef319f7c52e3c2cb6bf0c61ad82fdef04e25669fb027d651e",
+}
 HASHES = {
     "dock-ampliacion.png": "c49c286934214b00c77b87563898ee2751c9782aab27cbc712912139dc4ef3f9",
     "menu-manzana.png": "8f2bf4039d66e826d4acbe9f28ee464591cf86f5d231c6552a7ac322df57286e",
@@ -76,6 +81,11 @@ REQUIRED = [
     "ArtCraft",
     "cristal en vivo",
     "«pronto»",
+    "Captura real facilitada por el autor",
+    "1919",
+    "1079",
+    "1 de 12",
+    "botón Abrir",
 ]
 
 FORBIDDEN = [
@@ -89,6 +99,10 @@ FORBIDDEN = [
     "descargar",
     "garantizado",
     "con garantía",
+    "no se ha recuperado",
+    "diseño propio hasta",
+    "500 GB",
+    "500GB",
 ]
 
 
@@ -167,8 +181,8 @@ def main() -> int:
         errors.append("falta el enlace de saltar al contenido")
     if not page.dialog:
         errors.append("falta el diálogo de la galería")
-    if page.buttons < 10:
-        errors.append(f"solo hay {page.buttons} botones; la galería necesita 10")
+    if page.buttons < 12:
+        errors.append(f"solo hay {page.buttons} botones; hacen falta 12 vistas ampliables")
 
     for needed in (
         "que-es",
@@ -188,6 +202,8 @@ def main() -> int:
         "centro-de-control",
         "app-store",
         "vista-rapida",
+        "escritorio",
+        "tienda-autor",
     ):
         if needed not in page.ids:
             errors.append(f"falta el id #{needed}")
@@ -210,12 +226,27 @@ def main() -> int:
             errors.append(f"enlace no verificado: {href}")
 
     demo_srcs = [src for src in page.srcs if src.startswith("assets/demo/")]
+    autor_srcs = [src for src in page.srcs if src.startswith("assets/autor/")]
+    if autor_srcs != [f"assets/autor/{name}" for name in AUTOR_HASHES]:
+        errors.append(f"las capturas del autor no van en orden: {autor_srcs}")
     if demo_srcs != [f"assets/demo/{name}" for name in HASHES]:
-        errors.append(f"la galería no lista las 10 capturas en orden: {demo_srcs}")
+        errors.append(f"la demostración no lista las 10 capturas en orden: {demo_srcs}")
 
     for src, alt in page.alts:
-        if src.startswith("assets/demo/") and (alt is None or len(alt.strip()) < 20):
+        if (src.startswith("assets/demo/") or src.startswith("assets/autor/")) and (alt is None or len(alt.strip()) < 20):
             errors.append(f"alt insuficiente en {src}")
+
+    def figure_html(figure_id: str) -> str:
+        start = html.index(f'id="{figure_id}"')
+        return html[start:html.index("</figure>", start)]
+
+    for figure_id in ("escritorio", "tienda-autor"):
+        chunk = figure_html(figure_id)
+        if "Captura real facilitada por el autor" not in chunk:
+            errors.append(f"#{figure_id} no declara la procedencia del autor")
+        for banned in ("WhiteSur", "cuenta Demo", "picom", "Demostración"):
+            if banned in chunk:
+                errors.append(f"#{figure_id} mezcla la captura del autor con la demostración ({banned})")
 
     if page.imgs_without_dims:
         errors.append("hay imágenes sin width y height")
@@ -233,6 +264,9 @@ def main() -> int:
     seen = {path.name for path in DEMO.glob("*.png")}
     if seen != set(HASHES):
         errors.append(f"PNG inesperados en assets/demo: {sorted(seen)}")
+    seen_autor = {path.name for path in AUTOR.glob("*.png")}
+    if seen_autor != set(AUTOR_HASHES):
+        errors.append(f"PNG inesperados en assets/autor: {sorted(seen_autor)}")
 
     for name, digest in HASHES.items():
         path = DEMO / name
@@ -246,10 +280,22 @@ def main() -> int:
         if b"tEXt" in blob and b"xwdump" not in blob:
             errors.append(f"{name} cambió el comentario original")
 
+    for name, digest in AUTOR_HASHES.items():
+        path = AUTOR / name
+        blob = path.read_bytes()
+        found = hashlib.sha256(blob).hexdigest()
+        if found != digest:
+            errors.append(f"bytes alterados en {name}")
+        width, height = png_size(path)
+        if (width, height) != (1919, 1079):
+            errors.append(f"{name} mide {width}x{height}")
+        if b"tEXt" in blob or b"iTXt" in blob or b"zTXt" in blob:
+            errors.append(f"{name} incorpora metadatos de texto")
+
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
-    print(f"ok: {len(HASHES)} capturas intactas, enlaces públicos y textos contrastados")
+    print(f"ok: {len(AUTOR_HASHES)} capturas del autor y {len(HASHES)} de demostración, bytes intactos")
     return 0
 
 

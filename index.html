@@ -106,13 +106,18 @@ a{color:var(--accent)}
 .nav a:not(.brand){color:var(--muted);text-decoration:none;font-size:.92rem;min-height:44px;display:inline-flex;align-items:center}
 .nav a:not(.brand):hover{color:var(--ink)}
 .wrap{max-width:var(--page);margin:0 auto;padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right))}
-.hero{padding:clamp(3.2rem,7vw,5.5rem) 0 clamp(2.8rem,6vw,4.2rem)}
+.hero{padding:clamp(1.7rem,4vw,2.6rem) 0 clamp(2rem,5vw,3.2rem)}
 .eyebrow{margin:0 0 .8rem;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 h1,h2,h3{font-family:var(--serif);font-weight:560;letter-spacing:-.025em;line-height:1.08;text-wrap:balance}
-h1{margin:0;font-size:clamp(3.1rem,8vw,5.7rem);line-height:.98}
+h1{margin:0;font-size:clamp(2.8rem,6.2vw,4.5rem);line-height:.98}
 .lead{margin:1.15rem 0 0;max-width:var(--measure);font-size:clamp(1.15rem,2vw,1.35rem);line-height:1.45;text-wrap:pretty}
-.hero-grid{display:grid;gap:2rem;align-items:start}
-@media (min-width:920px){.hero-grid{grid-template-columns:minmax(0,1.35fr) minmax(17rem,.78fr);gap:3.5rem}}
+.hero-grid{display:grid;gap:1.15rem 2rem;align-items:start}
+@media (min-width:920px){
+  .hero-grid{grid-template-columns:minmax(0,1.35fr) minmax(17rem,.72fr);grid-template-areas:"copy ficha" "shot shot";gap:1.1rem 2.4rem}
+  .hero-copy{grid-area:copy}
+  .ficha{grid-area:ficha}
+  .hero-figure{grid-area:shot}
+}
 .status{display:inline-flex;align-items:center;gap:.5rem;margin:1.35rem 0 0;padding:.38rem .75rem .38rem .55rem;border-radius:999px;background:var(--orange);color:var(--on-orange);font-size:.84rem;font-weight:730;letter-spacing:.01em;line-height:1.2}
 .status .dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--on-orange);display:block;flex:none}
 .actions{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin:1.5rem 0 0;align-items:center}
@@ -141,6 +146,10 @@ h3{margin:0;font-size:1.35rem}
 .shot img{display:block;width:100%;height:auto;background:var(--bg-deep)}
 .gallery figcaption{padding:.85rem .1rem 0}
 .kicker{margin:0 0 .35rem;font-size:.72rem;font-weight:760;letter-spacing:.13em;text-transform:uppercase;color:var(--kicker)}
+.kicker.exact{text-transform:none;letter-spacing:0;font-size:.92rem;font-weight:680}
+.hero-figure,.feature{margin:.35rem 0 0}
+.hero-figure figcaption,.feature figcaption{padding:.8rem .05rem 0}
+.hero-figure .shot,.feature .shot{border-radius:12px}
 .caption{margin:.4rem 0 0;font-size:.98rem;line-height:1.5;text-wrap:pretty}
 .spec{margin:1.5rem 0 0;max-width:48rem}
 .spec div{display:grid;gap:.25rem;padding:1rem 0;border-top:1px solid var(--line)}
@@ -159,11 +168,13 @@ footer a{min-height:44px;display:inline-flex;align-items:center;color:var(--acce
 dialog{border:0;padding:0;background:transparent;color:var(--ink);width:min(1040px,calc(100vw - 1.5rem));max-width:calc(100vw - 1.5rem);max-height:calc(100dvh - 1.5rem);margin:auto}
 dialog::backdrop{background:rgba(12,11,9,.72)}
 .visor{background:var(--card);border-radius:20px;border:1px solid var(--line);overflow:auto;max-height:calc(100dvh - 1.5rem);padding:1rem 1rem 1.15rem}
-.visor-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem}
-.visor-bar p{margin:0;font-size:.8rem;font-weight:730;letter-spacing:.12em;text-transform:uppercase;color:var(--kicker)}
+.visor-bar{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.visor-bar p{margin:0}
+#visor-procedencia{font-size:.95rem;font-weight:680;letter-spacing:0;text-transform:none;color:var(--kicker);line-height:1.35}
+#visor-cuenta{margin-top:.15rem;font-size:.75rem;font-weight:730;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .visor button{font:inherit;min-height:44px;padding:.4rem .9rem;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
 .visor button:hover{border-color:var(--accent)}
-.visor img{display:block;width:100%;height:auto;max-height:68dvh;object-fit:contain;margin-top:.8rem;border-radius:12px;background:var(--bg-deep)}
+.visor img{display:block;width:auto;max-width:100%;height:auto;max-height:68dvh;object-fit:contain;margin-top:.8rem;border-radius:12px;background:#07111f}
 #visor-titulo{margin:.9rem 0 0;font-size:clamp(1.5rem,3vw,2rem)}
 #visor-texto{margin:.45rem 0 0;max-width:46rem}
 .visor-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
@@ -198,7 +209,7 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
 <main id="contenido" tabindex="-1">
   <header class="hero wrap" id="que-es">
     <div class="hero-grid">
-      <div>
+      <div class="hero-copy">
         <p class="eyebrow">Sistemas · Proyectos de Miguel</p>
         <h1 translate="no">Zalmann OS</h1>
         <p class="lead">Perfil experimental de escritorio para una sesión X11 de Ubuntu con XFCE. Vive en la cuenta de quien lo usa. No es un sistema operativo autónomo ni una distribución que arranque por sí sola.</p>
@@ -208,6 +219,17 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
           <a href="https://ardu01.github.io/proyectos/#zalmann-os">Ficha en el catálogo</a>
         </div>
       </div>
+      <figure class="hero-figure" id="escritorio">
+        <button type="button" class="shot shot-real" aria-haspopup="dialog" aria-controls="visor">
+          <span class="sr-only">Ampliar.</span>
+          <img src="assets/autor/escritorio.png" width="1919" height="1079" alt="Escritorio real facilitado por el autor, con la barra superior, un fondo azul y el dock. La imagen se muestra entera." decoding="async" fetchpriority="high">
+        </button>
+        <figcaption>
+          <p class="kicker exact">Captura real facilitada por el autor</p>
+          <h3>Escritorio</h3>
+          <p class="caption">Barra superior y dock, en la captura que facilitó el autor. Se muestra entera, sin texto encima. El fondo y el tema de esa instalación no se redistribuyen desde esta página.</p>
+        </figcaption>
+      </figure>
       <aside class="ficha" aria-labelledby="ficha-titulo">
         <p class="ficha-kicker" id="ficha-titulo">Ficha contrastada · 0.8.0</p>
         <dl>
@@ -230,10 +252,22 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
       <p class="sec-no">01</p>
       <h2 id="recorrido-titulo">Recorrido visual</h2>
       <div class="notice">
-        <p><strong>Demostración.</strong> Las diez vistas salen de una ejecución real en una sesión X11 aislada, a 1920×1080, con la cuenta Demo y datos ficticios. El tema es el alternativo WhiteSur-Light y el fondo está generado para la demo. No es la instalación de Miguel y no es el aspecto final.</p>
-        <p>Picom no arrancó: no hay sombras ni miniaturas de Mission Control, y la barra superior no está montada. Hay otra captura real del escritorio, con su fondo y su dock, que todavía no está en esta página: el archivo no se ha recuperado y no se inventa. El inicio de la página es un diseño propio hasta entonces.</p>
+        <p>El escritorio del inicio y la vista siguiente son capturas reales facilitadas por el autor. El fondo y el tema de esa instalación no se redistribuyen aquí.</p>
+        <p><strong>Demostración.</strong> Las otras diez vistas salen de una sesión X11 aislada, a 1920×1080, con la cuenta Demo y datos ficticios. En esa sesión el tema es el alternativo WhiteSur-Light, el fondo está generado y picom no arrancó: no hay sombras ni miniaturas de Mission Control, y la barra superior no está montada. Esas diez no son las capturas del autor.</p>
       </div>
-      <p class="hint">Cada vista se amplía con el ratón, el dedo o el teclado. Dentro, las flechas cambian de captura y Escape cierra.</p>
+      <p class="hint">Cada vista se amplía con el ratón, el dedo o el teclado. Dentro, las flechas cambian de captura y Escape cierra. Hay doce vistas.</p>
+      <figure class="feature" id="tienda-autor">
+        <button type="button" class="shot shot-real" aria-haspopup="dialog" aria-controls="visor">
+          <span class="sr-only">Ampliar.</span>
+          <img src="assets/autor/tienda-acerca.png" width="1919" height="1079" alt="Captura real del autor: App Store en Descubrir, ventana Acerca de Zalmann OS 0.8.0 y Chrome en una pestaña nueva detrás." loading="lazy" decoding="async">
+        </button>
+        <figcaption>
+          <p class="kicker exact">Captura real facilitada por el autor</p>
+          <h3>App Store y Acerca de</h3>
+          <p class="caption">App Store en Descubrir, con PhotoCraft destacado, la ventana Acerca de en la versión 0.8.0 y Chrome en una pestaña nueva detrás. El botón Abrir no acredita que cada herramienta se haya instalado o probado.</p>
+        </figcaption>
+      </figure>
+      <p class="kicker" id="demo-titulo">Demostración en sesión aislada</p>
       <ul class="gallery">
         <li>
           <figure id="dock">
@@ -395,7 +429,7 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
         </div>
         <div>
           <dt>Tema previsto</dt>
-          <dd>MacTahoe-Light-solid, con iconos y cursor. No están incluidos en el repositorio. Las capturas usan el tema alternativo WhiteSur-Light.</dd>
+          <dd>MacTahoe-Light-solid, con iconos y cursor. No están incluidos en el repositorio. La demostración usa el tema alternativo WhiteSur-Light. Las capturas del autor no identifican ni redistribuyen el fondo o el tema de su instalación.</dd>
         </div>
         <div>
           <dt>Compositor</dt>
@@ -403,7 +437,7 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
         </div>
         <div>
           <dt>Tienda</dt>
-          <dd>Catálogo local. El README describe 15 herramientas ArtCraft y 6 entradas de Windows, gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. En la demostración no se pulsó Obtener, no se instaló nada y Flathub no estaba presente. Esas instalaciones no se dan por probadas.</dd>
+          <dd>Catálogo local. El README describe 15 herramientas ArtCraft y 6 entradas de Windows, gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. En la demostración no se pulsó Obtener, no se instaló nada y Flathub no estaba presente. En la captura del autor se ve el botón Abrir; esa leyenda no acredita que cada herramienta se haya instalado o probado.</dd>
         </div>
         <div>
           <dt>Pruebas</dt>
@@ -425,13 +459,14 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
         <li>No es un sistema autónomo ni una distribución arrancable. No hay imagen ISO ni descarga en esta página.</li>
         <li>El tema previsto, MacTahoe-Light-solid, y sus iconos y cursor no viajan con el repositorio.</li>
         <li>El modo oscuro figura como «pronto». Los títulos de las ventanas no lo siguen.</li>
-        <li>Sin picom no hay sombras ni miniaturas de Mission Control. En la demostración picom falló y la barra superior no está montada.</li>
-        <li>El dock no es cristal en vivo. El rebote y el punto de aplicación abierta no se probaron.</li>
+        <li>En la demostración, picom no arrancó: no hay sombras ni miniaturas de Mission Control, y la barra superior no está montada. La captura del autor sí muestra la barra superior. De ahí no se deduce el compositor ni el hardware.</li>
+        <li>En la demostración el dock no es cristal en vivo, y el rebote y el punto de aplicación abierta no se probaron.</li>
         <li>Spotlight puede mostrar la carpeta Documents en inglés, como describe el README.</li>
         <li>El Wi-Fi del centro de control muestra el estado y no lo apaga. En la demo no había adaptador. El volumen no se probó y No molestar estaba desactivado.</li>
         <li>Wayland y varios monitores no están validados. Android sigue pendiente de Waydroid.</li>
         <li>Las 14 pruebas de unittest no cubren una validación completa ni el hardware.</li>
-        <li>Las capturas son una demostración con cuenta Demo, fondo generado y tema WhiteSur-Light. No representan la instalación de Miguel ni el aspecto final.</li>
+        <li>Las diez vistas de la demostración usan la cuenta Demo, un fondo generado y el tema WhiteSur-Light. No son las capturas del autor.</li>
+        <li>Las dos capturas reales las facilitó el autor. Esta página muestra esas imágenes y no redistribuye el fondo ni el tema de su instalación.</li>
       </ul>
     </div>
   </section>
@@ -462,7 +497,10 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
 <dialog id="visor" aria-labelledby="visor-titulo" aria-describedby="visor-texto">
   <div class="visor">
     <div class="visor-bar">
-      <p>Demostración · <span id="visor-cuenta">1 de 10</span></p>
+      <div>
+        <p id="visor-procedencia">Captura real facilitada por el autor</p>
+        <p id="visor-cuenta">1 de 12</p>
+      </div>
       <form method="dialog"><button type="submit">Cerrar</button></form>
     </div>
     <img id="visor-img" alt="" width="1920" height="1080" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
@@ -481,20 +519,24 @@ dialog::backdrop{background:rgba(12,11,9,.72)}
   if (!buttons.length || !dialog || typeof dialog.showModal !== "function") return;
   var img = document.getElementById("visor-img");
   var title = document.getElementById("visor-titulo");
-  var text = document.getElementById("visor-texto");
-  var count = document.getElementById("visor-cuenta");
-  var index = 0;
+    var text = document.getElementById("visor-texto");
+    var count = document.getElementById("visor-cuenta");
+    var procedencia = document.getElementById("visor-procedencia");
+    var index = 0;
 
-  function show(i) {
-    index = (i + buttons.length) % buttons.length;
-    var source = buttons[index].querySelector("img");
-    var figure = buttons[index].closest("figure");
-    img.src = source.currentSrc || source.getAttribute("src");
-    img.alt = source.alt;
-    title.textContent = figure.querySelector("h3").textContent;
-    text.textContent = figure.querySelector(".caption").textContent;
-    count.textContent = (index + 1) + " de " + buttons.length;
-  }
+    function show(i) {
+      index = (i + buttons.length) % buttons.length;
+      var source = buttons[index].querySelector("img");
+      var figure = buttons[index].closest("figure");
+      img.src = source.currentSrc || source.getAttribute("src");
+      img.alt = source.alt;
+      img.setAttribute("width", source.getAttribute("width"));
+      img.setAttribute("height", source.getAttribute("height"));
+      title.textContent = figure.querySelector("h3").textContent;
+      text.textContent = figure.querySelector(".caption").textContent;
+      procedencia.textContent = figure.querySelector(".kicker").textContent;
+      count.textContent = (index + 1) + " de " + buttons.length;
+    }
 
   buttons.forEach(function (button, i) {
     button.addEventListener("click", function () {
