@@ -4,151 +4,515 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
-<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f3f0e8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131210" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
-<title>Zalmann OS · Proyectos de Miguel</title>
-<meta name="description" content="Zalmann OS: escritorio Ubuntu XFCE de inspiración Tahoe, con un dock magnificador renderizado por software. Proyecto en Python, en desarrollo.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Miguel Rodríguez Saiz">
+<meta name="description" content="Zalmann OS 0.8.0 es un perfil experimental de escritorio para Ubuntu XFCE en X11, con un dock dibujado por software. En desarrollo: no es un sistema arrancable y esta página no ofrece descarga.">
+<title>Zalmann OS · Perfil de escritorio sobre Ubuntu XFCE</title>
 <link rel="canonical" href="https://ardu01.github.io/zalmann-os-web/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231c1915'/%3E%3Cpath d='M8 10h16M24 10 8 22M8 22h16' fill='none' stroke='%23f4efe6' stroke-width='2.2' stroke-linecap='square'/%3E%3C/svg%3E">
 <meta property="og:title" content="Zalmann OS">
-<meta property="og:description" content="Escritorio Ubuntu XFCE de inspiración Tahoe, con un dock magnificador renderizado por software. En desarrollo.">
+<meta property="og:description" content="Perfil experimental de escritorio sobre Ubuntu XFCE, sesión X11, versión 0.8.0. En desarrollo. No es un sistema arrancable ni hay descarga.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ardu01.github.io/zalmann-os-web/">
 <meta property="og:locale" content="es_ES">
-<!-- Contenido limitado a la descripción verificada del proyecto y a su lenguaje (Python). Sin enlace al repositorio privado. -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zalmann OS">
+<meta name="twitter:description" content="Perfil experimental de escritorio sobre Ubuntu XFCE, sesión X11, versión 0.8.0. En desarrollo.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Zalmann OS",
+  "url": "https://ardu01.github.io/zalmann-os-web/",
+  "inLanguage": "es",
+  "dateModified": "2026-11-08",
+  "description": "Perfil experimental de escritorio sobre Ubuntu XFCE en sesión X11. No es un sistema autónomo ni una distribución arrancable.",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Proyectos de Miguel",
+    "url": "https://ardu01.github.io/proyectos/"
+  },
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "Zalmann OS",
+    "softwareVersion": "0.8.0",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Ubuntu XFCE, sesión X11",
+    "description": "Perfil experimental de escritorio sobre Ubuntu XFCE. No es un sistema autónomo ni una distribución arrancable."
+  }
+}
+</script>
 <style>
-:root{--bg:#fbfbfd;--bg2:#f5f5f7;--card:#fff;--fg:#1d1d1f;--fg2:#6e6e73;--line:rgba(0,0,0,.08);--accent:#0071e3;--fill:#0071e3;--nav:rgba(251,251,253,.72);--shadow:0 2px 6px rgba(0,0,0,.04),0 12px 32px rgba(0,0,0,.06);--dev-bg:#fff4e8;--dev-fg:#c93400}
-@media (prefers-color-scheme:dark){:root{--bg:#000;--bg2:#0b0b0d;--card:#1c1c1e;--fg:#f5f5f7;--fg2:#a1a1a6;--line:rgba(255,255,255,.1);--accent:#2997ff;--fill:#0071e3;--nav:rgba(22,22,23,.72);--shadow:0 0 0 1px rgba(255,255,255,.06);--dev-bg:#3a2a14;--dev-fg:#ffb340}}
-@media (prefers-contrast:more){:root{--fg2:#3a3a3c;--line:rgba(0,0,0,.45)}}
-@media (prefers-contrast:more) and (prefers-color-scheme:dark){:root{--fg2:#e5e5ea;--line:rgba(255,255,255,.5)}}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:68px;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
-body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;line-height:1.5;letter-spacing:-.011em;min-height:100vh}
-a{color:inherit}
+:root{
+  --bg:#f3f0e8;
+  --bg-deep:#e6e0d4;
+  --card:#fbf9f4;
+  --ink:#1c1915;
+  --muted:#4e4940;
+  --line:rgba(28,25,21,.14);
+  --accent:#1c463f;
+  --orange:#a63d0c;
+  --on-orange:#fffaf6;
+  --focus:#1c463f;
+  --nav:rgba(243,240,232,.9);
+  --kicker:#a63d0c;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Liberation Serif",Georgia,serif;
+  --sans:Inter,"Segoe UI","Noto Sans","Liberation Sans",Cantarell,sans-serif;
+  --measure:40rem;
+  --page:1120px;
+  --pad:clamp(1.25rem,4vw,2rem);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#131210;
+    --bg-deep:#0c0b0a;
+    --card:#1d1c19;
+    --ink:#f4efe6;
+    --muted:#c9c0b3;
+    --line:rgba(244,239,230,.16);
+    --accent:#9fd8cc;
+    --focus:#9fd8cc;
+    --nav:rgba(19,18,16,.9);
+    --kicker:#ffb067;
+    color-scheme:dark;
+  }
+}
+@media (prefers-contrast:more){
+  :root{--muted:#2b2823;--line:rgba(28,25,21,.55);--focus:#062e28}
+}
+@media (prefers-contrast:more) and (prefers-color-scheme:dark){
+  :root{--muted:#f4efe6;--line:rgba(244,239,230,.7);--focus:#e7fff8}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:5.5rem;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:1.0625rem;line-height:1.6;font-weight:430;letter-spacing:-.011em;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;height:auto}
+a{color:var(--accent)}
 :focus{outline:none}
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.skip{position:absolute;left:16px;top:0;transform:translateY(-120%);background:var(--fill);color:#fff;padding:10px 16px;border-radius:999px;z-index:20;font-size:14px;font-weight:600}
-.skip:focus{transform:none;top:12px}
-nav{position:sticky;top:0;z-index:10;padding-top:env(safe-area-inset-top);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);background:var(--nav);border-bottom:1px solid var(--line)}
-.navin{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:22px;min-height:52px;padding:0 max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left));overflow-x:auto;scrollbar-width:none}
-.navin::-webkit-scrollbar{display:none}
-.brand{font-weight:600;font-size:17px;white-space:nowrap;margin-right:auto;text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
-.navin a:not(.brand){font-size:13px;color:var(--fg2);white-space:nowrap;text-decoration:none;min-height:44px;display:inline-flex;align-items:center;flex:none}
-.navin a:not(.brand):hover{color:var(--fg)}
-.hero{padding:72px max(22px,env(safe-area-inset-right)) 64px max(22px,env(safe-area-inset-left));background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%)}
-.hero-in,.wrap{max-width:980px;margin:0 auto}
-.mark{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;background:var(--fill);color:#fff;font-weight:700;font-size:26px;letter-spacing:-.04em;margin-bottom:22px}
-.eyebrow{font-size:15px;font-weight:600;color:var(--accent);margin-bottom:8px}
-h1{font-size:clamp(44px,8vw,76px);font-weight:700;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
-.lead{font-size:clamp(18px,2.2vw,23px);color:var(--fg2);max-width:38rem;margin-top:18px;font-weight:400;text-wrap:pretty}
-.hero-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-top:26px}
-.pills{display:flex;gap:6px;flex-wrap:wrap}
-.pill{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px}
-.pill.dev{background:var(--dev-bg);color:var(--dev-fg)}
-.pill.cat{background:var(--card);color:var(--fg2);border:1px solid var(--line);font-weight:500}
-.updated{font-size:14px;color:var(--fg2)}
-main{max-width:980px;margin:0 auto;padding:8px max(22px,env(safe-area-inset-right)) 24px max(22px,env(safe-area-inset-left))}
-main:focus-visible{outline-offset:6px}
-section{padding:64px 0 8px}
-h2{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.03em;line-height:1.1;text-wrap:balance}
-.prose{max-width:40rem;margin-top:16px;font-size:17px;color:var(--fg)}
-.prose p+p{margin-top:12px}
-.prose a{color:var(--accent);text-underline-offset:3px}
-.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:28px}
-.fact{background:var(--card);border-radius:22px;padding:22px 20px 20px;box-shadow:var(--shadow);min-width:0}
-.fact dt{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--fg2)}
-.fact dd{font-size:20px;font-weight:600;letter-spacing:-.02em;line-height:1.25;margin-top:10px}
-.status{margin-top:28px;background:var(--card);border-radius:22px;padding:28px 28px 26px;box-shadow:var(--shadow);border-left:3px solid #ff9500}
-.status p{margin-top:14px;font-size:17px;color:var(--fg);max-width:40rem}
-.catalog{margin-top:22px}
-.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
-.btn{font-size:15px;padding:10px 18px;min-height:44px;border-radius:999px;border:1px solid var(--line);color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;background:var(--card);transition:background .2s}
-.btn:hover{background:var(--bg2)}
-.btn.primary{background:var(--fill);color:#fff;border-color:transparent}
-.btn.primary:hover{filter:brightness(1.08);background:var(--fill)}
-.btn.primary:focus-visible{outline-color:var(--fg)}
-footer{color:var(--fg2);font-size:13px;padding:72px max(22px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left));border-top:1px solid var(--line);margin-top:72px}
-.footer-in{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
-footer a{color:var(--accent);text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+::selection{background:#e4d3bf;color:#1c1915}
+@media (prefers-color-scheme:dark){::selection{background:#3d524c;color:#f4efe6}}
+.skip{position:absolute;left:var(--pad);top:0;transform:translateY(-130%);background:var(--accent);color:#fff;padding:.7rem 1rem;border-radius:999px;z-index:30;font-weight:650;text-decoration:none}
+@media (prefers-color-scheme:dark){.skip{color:#131210}}
+.skip:focus{transform:none;top:.7rem}
+.nav{position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top);background:var(--nav);border-bottom:1px solid var(--line);backdrop-filter:saturate(140%) blur(16px);-webkit-backdrop-filter:saturate(140%) blur(16px)}
+.nav-in{max-width:var(--page);margin:0 auto;padding:.35rem var(--pad);display:flex;flex-wrap:wrap;align-items:center;gap:.15rem 1.15rem}
+.brand{margin-right:auto;color:inherit;text-decoration:none;font-weight:680;letter-spacing:-.03em;min-height:44px;display:inline-flex;align-items:center;font-size:1.05rem}
+.brand span{font-weight:560;margin-left:.35rem;letter-spacing:.08em;font-size:.72rem;color:var(--muted)}
+.nav a:not(.brand){color:var(--muted);text-decoration:none;font-size:.92rem;min-height:44px;display:inline-flex;align-items:center}
+.nav a:not(.brand):hover{color:var(--ink)}
+.wrap{max-width:var(--page);margin:0 auto;padding-left:max(var(--pad),env(safe-area-inset-left));padding-right:max(var(--pad),env(safe-area-inset-right))}
+.hero{padding:clamp(3.2rem,7vw,5.5rem) 0 clamp(2.8rem,6vw,4.2rem)}
+.eyebrow{margin:0 0 .8rem;font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{font-family:var(--serif);font-weight:560;letter-spacing:-.025em;line-height:1.08;text-wrap:balance}
+h1{margin:0;font-size:clamp(3.1rem,8vw,5.7rem);line-height:.98}
+.lead{margin:1.15rem 0 0;max-width:var(--measure);font-size:clamp(1.15rem,2vw,1.35rem);line-height:1.45;text-wrap:pretty}
+.hero-grid{display:grid;gap:2rem;align-items:start}
+@media (min-width:920px){.hero-grid{grid-template-columns:minmax(0,1.35fr) minmax(17rem,.78fr);gap:3.5rem}}
+.status{display:inline-flex;align-items:center;gap:.5rem;margin:1.35rem 0 0;padding:.38rem .75rem .38rem .55rem;border-radius:999px;background:var(--orange);color:var(--on-orange);font-size:.84rem;font-weight:730;letter-spacing:.01em;line-height:1.2}
+.status .dot{width:.55rem;height:.55rem;border-radius:50%;background:var(--on-orange);display:block;flex:none}
+.actions{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;margin:1.5rem 0 0;align-items:center}
+.actions a{min-height:44px;display:inline-flex;align-items:center;font-weight:650;text-underline-offset:.22em}
+.ficha{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:1.25rem 1.3rem .45rem;box-shadow:0 1px 0 rgba(28,25,21,.03)}
+.ficha-kicker{margin:0 0 .85rem;font-size:.75rem;font-weight:730;letter-spacing:.12em;text-transform:uppercase;color:var(--kicker)}
+.ficha dl{margin:0}
+.ficha div{padding:.72rem 0;border-top:1px solid var(--line)}
+.ficha dt{font-size:.72rem;font-weight:730;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ficha dd{margin:.18rem 0 0;font-size:1.02rem;font-weight:620;letter-spacing:-.015em;line-height:1.35}
+.prose{max-width:42rem}
+.prose p{margin:1rem 0 0;text-wrap:pretty}
+.prose a,.inline a{text-underline-offset:.22em}
+.block{padding:clamp(3rem,6vw,4.6rem) 0;border-top:1px solid var(--line)}
+.sec-no{display:block;margin:0 0 .45rem;font-family:var(--sans);font-size:.74rem;font-weight:730;letter-spacing:.16em;color:var(--muted)}
+h2{margin:0;font-size:clamp(2rem,4vw,3.15rem)}
+h3{margin:0;font-size:1.35rem}
+.notice{margin:1.4rem 0 0;padding:1rem 1.1rem 1.05rem;border-left:3px solid var(--orange);background:var(--card);border-radius:0 16px 16px 0;max-width:46rem}
+.notice p{margin:.55rem 0 0}
+.notice p:first-child{margin-top:0}
+.hint{margin:1rem 0 0;color:var(--muted);font-size:.95rem;max-width:42rem}
+.gallery{list-style:none;margin:2rem 0 0;padding:0;display:grid;gap:2.2rem}
+@media (min-width:840px){.gallery{grid-template-columns:1fr 1fr;gap:2.4rem 1.6rem}}
+.gallery figure{margin:0;min-width:0}
+.shot{display:block;width:100%;padding:0;border:1px solid var(--line);border-radius:16px;background:var(--bg-deep);overflow:hidden;cursor:zoom-in;color:inherit}
+.shot img{display:block;width:100%;height:auto;background:var(--bg-deep)}
+.gallery figcaption{padding:.85rem .1rem 0}
+.kicker{margin:0 0 .35rem;font-size:.72rem;font-weight:760;letter-spacing:.13em;text-transform:uppercase;color:var(--kicker)}
+.caption{margin:.4rem 0 0;font-size:.98rem;line-height:1.5;text-wrap:pretty}
+.spec{margin:1.5rem 0 0;max-width:48rem}
+.spec div{display:grid;gap:.25rem;padding:1rem 0;border-top:1px solid var(--line)}
+@media (min-width:720px){.spec div{grid-template-columns:11.5rem minmax(0,1fr);gap:1.5rem;align-items:baseline}}
+.spec dt{font-size:.78rem;font-weight:730;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.spec dd{margin:0;text-wrap:pretty}
+.limits{margin:1.3rem 0 0;padding:0;max-width:44rem}
+.limits li{margin:.7rem 0 0;padding-left:.15rem;text-wrap:pretty}
+.limits li::marker{color:var(--orange)}
+.links{display:flex;flex-direction:column;align-items:flex-start;gap:.35rem;margin-top:1.2rem}
+.links a{min-height:44px;display:inline-flex;align-items:center;font-weight:620;text-underline-offset:.22em}
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}
+.footer-in{max-width:var(--page);margin:0 auto;padding:2rem max(var(--pad),env(safe-area-inset-right)) calc(2rem + env(safe-area-inset-bottom)) max(var(--pad),env(safe-area-inset-left));display:flex;justify-content:space-between;gap:1rem 1.5rem;flex-wrap:wrap}
+footer a{min-height:44px;display:inline-flex;align-items:center;color:var(--accent);text-underline-offset:.22em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+dialog{border:0;padding:0;background:transparent;color:var(--ink);width:min(1040px,calc(100vw - 1.5rem));max-width:calc(100vw - 1.5rem);max-height:calc(100dvh - 1.5rem);margin:auto}
+dialog::backdrop{background:rgba(12,11,9,.72)}
+.visor{background:var(--card);border-radius:20px;border:1px solid var(--line);overflow:auto;max-height:calc(100dvh - 1.5rem);padding:1rem 1rem 1.15rem}
+.visor-bar{display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.visor-bar p{margin:0;font-size:.8rem;font-weight:730;letter-spacing:.12em;text-transform:uppercase;color:var(--kicker)}
+.visor button{font:inherit;min-height:44px;padding:.4rem .9rem;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.visor button:hover{border-color:var(--accent)}
+.visor img{display:block;width:100%;height:auto;max-height:68dvh;object-fit:contain;margin-top:.8rem;border-radius:12px;background:var(--bg-deep)}
+#visor-titulo{margin:.9rem 0 0;font-size:clamp(1.5rem,3vw,2rem)}
+#visor-texto{margin:.45rem 0 0;max-width:46rem}
+.visor-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
 @media (hover:hover) and (pointer:fine){
-  .fact{transition:transform .35s cubic-bezier(.2,.8,.2,1)}
-  .fact:hover{transform:translateY(-4px)}
-}
-@media (max-width:900px){
-  .hero{padding-top:48px;padding-bottom:48px}
-  section{padding-top:48px}
-}
-@media (max-width:560px){
-  .facts{grid-template-columns:1fr}
-  .fact dd{font-size:18px}
-  .status{padding:22px 18px}
-  h1{font-size:clamp(40px,12vw,56px)}
+  .shot{transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+  .shot:hover{transform:translateY(-3px)}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .fact,.btn{transition:none}
-  .fact:hover{transform:none}
+  .shot{transition:none}
+  .shot:hover{transform:none}
+}
+@media (max-width:560px){
+  h1{font-size:clamp(2.7rem,14vw,3.4rem)}
+  .visor{border-radius:16px}
 }
 </style>
 </head>
 <body id="top">
 <a class="skip" href="#contenido">Saltar al contenido</a>
-<nav aria-label="En esta página">
-  <div class="navin">
-    <a class="brand" href="#top">Zalmann OS</a>
+<nav class="nav" aria-label="En esta página">
+  <div class="nav-in">
+    <a class="brand" href="#top" translate="no">Zalmann <span>OS</span></a>
     <a href="#que-es">Qué es</a>
-    <a href="#datos">Datos</a>
+    <a href="#recorrido">Recorrido</a>
+    <a href="#arquitectura">Arquitectura</a>
     <a href="#estado">Estado</a>
+    <a href="#enlaces">Enlaces</a>
     <a href="https://ardu01.github.io/proyectos/">Índice</a>
   </div>
 </nav>
-<header class="hero" id="que-es">
-  <div class="hero-in">
-    <div class="mark" aria-hidden="true">Z</div>
-    <p class="eyebrow">Sistemas</p>
-    <h1>Zalmann OS</h1>
-    <p class="lead">Escritorio Ubuntu XFCE de inspiración Tahoe, con un dock magnificador renderizado por software.</p>
-    <div class="hero-meta">
-      <div class="pills"><span class="pill dev">En desarrollo</span><span class="pill cat">Python</span></div>
-      <p class="updated">Actualizado el <time datetime="2026-11-06">6 de noviembre de 2026</time></p>
-    </div>
-  </div>
-</header>
 <main id="contenido" tabindex="-1">
-  <section id="datos" aria-labelledby="datos-titulo">
-    <h2 id="datos-titulo">Datos confirmados</h2>
-    <dl class="facts">
-      <div class="fact"><dt>Sistema</dt><dd>Ubuntu XFCE</dd></div>
-      <div class="fact"><dt>Referencia visual</dt><dd>Tahoe</dd></div>
-      <div class="fact"><dt>Dock</dt><dd>Magnificador por software</dd></div>
-      <div class="fact"><dt>Lenguaje</dt><dd>Python</dd></div>
-    </dl>
-  </section>
-  <section id="estado" aria-labelledby="estado-titulo">
-    <h2 id="estado-titulo">Estado</h2>
-    <div class="status">
-      <span class="pill dev">En desarrollo</span>
-      <p>El código está en un repositorio privado. Esta página no publica el enlace ni una descarga.</p>
-      <p>La página se ampliará cuando exista más material público.</p>
+  <header class="hero wrap" id="que-es">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow">Sistemas · Proyectos de Miguel</p>
+        <h1 translate="no">Zalmann OS</h1>
+        <p class="lead">Perfil experimental de escritorio para una sesión X11 de Ubuntu con XFCE. Vive en la cuenta de quien lo usa. No es un sistema operativo autónomo ni una distribución que arranque por sí sola.</p>
+        <p class="status"><span class="dot" aria-hidden="true"></span> En desarrollo</p>
+        <div class="actions">
+          <a href="#recorrido">Recorrido visual</a>
+          <a href="https://ardu01.github.io/proyectos/#zalmann-os">Ficha en el catálogo</a>
+        </div>
+      </div>
+      <aside class="ficha" aria-labelledby="ficha-titulo">
+        <p class="ficha-kicker" id="ficha-titulo">Ficha contrastada · 0.8.0</p>
+        <dl>
+          <div><dt>Versión</dt><dd translate="no">0.8.0</dd></div>
+          <div><dt>Base</dt><dd>Ubuntu XFCE</dd></div>
+          <div><dt>Sesión</dt><dd>X11, por usuario</dd></div>
+          <div><dt>Interfaz</dt><dd translate="no">Python 3, GTK 3, Cairo</dd></div>
+          <div><dt>Página</dt><dd>Actualizada el <time datetime="2026-11-08">8 de noviembre de 2026</time></dd></div>
+        </dl>
+      </aside>
     </div>
-  </section>
-  <section id="catalogo" class="catalog" aria-labelledby="catalogo-titulo">
-    <h2 id="catalogo-titulo">En el catálogo</h2>
     <div class="prose">
-      <p>La ficha está en la sección Prioritario del índice, la misma de SOPA IA y Jerry.</p>
+      <p>La referencia visual es un escritorio de inspiración Tahoe. El tema previsto, MacTahoe-Light-solid, y sus iconos y cursor no están en el repositorio. El dock es propio: se dibuja por software y puede ampliar los iconos. No es cristal en vivo.</p>
+      <p>Los datos de esta página se contrastaron con la versión 0.8.0, revisión 6904271. No hay imagen ISO ni descarga. Esta página no ofrece garantías ni cifras de rendimiento.</p>
     </div>
-    <div class="btns">
-      <a class="btn primary" href="https://ardu01.github.io/proyectos/#zalmann-os">Abrir la ficha</a>
-      <a class="btn" href="https://ardu01.github.io/proyectos/#sopa-ia">SOPA IA</a>
-      <a class="btn" href="https://ardu01.github.io/proyectos/#jerry">Jerry</a>
+  </header>
+
+  <section class="block" id="recorrido" aria-labelledby="recorrido-titulo">
+    <div class="wrap">
+      <p class="sec-no">01</p>
+      <h2 id="recorrido-titulo">Recorrido visual</h2>
+      <div class="notice">
+        <p><strong>Demostración.</strong> Las diez vistas salen de una ejecución real en una sesión X11 aislada, a 1920×1080, con la cuenta Demo y datos ficticios. El tema es el alternativo WhiteSur-Light y el fondo está generado para la demo. No es la instalación de Miguel y no es el aspecto final.</p>
+        <p>Picom no arrancó: no hay sombras ni miniaturas de Mission Control, y la barra superior no está montada. Hay otra captura real del escritorio, con su fondo y su dock, que todavía no está en esta página: el archivo no se ha recuperado y no se inventa. El inicio de la página es un diseño propio hasta entonces.</p>
+      </div>
+      <p class="hint">Cada vista se amplía con el ratón, el dedo o el teclado. Dentro, las flechas cambian de captura y Escape cierra.</p>
+      <ul class="gallery">
+        <li>
+          <figure id="dock">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/dock-ampliacion.png" width="1920" height="1080" alt="Dock de la demostración sobre un fondo azul generado. El icono de Finder está ampliado y muestra la etiqueta Finder. No hay barra superior." decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 01</p>
+              <h3>Dock con ampliación</h3>
+              <p class="caption">El puntero agranda el icono de Finder. El dock está dibujado por software. No es cristal en vivo: el rebote y el punto de aplicación abierta no se probaron.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="menu">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/menu-manzana.png" width="1920" height="1080" alt="Menú de Zalmann OS abierto en la esquina superior izquierda, con Reiniciar resaltado. Dock inferior sobre el fondo generado, sin barra superior." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 02</p>
+              <h3>Menú de la manzana</h3>
+              <p class="caption">Menú abierto en la cuenta Demo. Reiniciar aparece resaltado porque el puntero está encima. La barra superior no está montada en esta demostración.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="acerca">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/acerca-de.png" width="1920" height="1080" alt="Ventana About Zalmann OS con la versión 0.8.0 y el botón Close en inglés, sobre el escritorio de demostración." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 03</p>
+              <h3>Acerca de Zalmann OS</h3>
+              <p class="caption">La ventana muestra la versión 0.8.0. El título de la ventana y el botón Close están en inglés por el idioma de la cuenta Demo.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="apariencia">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/apariencia.png" width="1920" height="1080" alt="Ajustes del Sistema, apartado Apariencia: Claro seleccionado, Oscuro marcado como pronto, tema WhiteSur-Light y un aviso de que los títulos no siguen el modo oscuro." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 04</p>
+              <h3>Apariencia</h3>
+              <p class="caption">Claro está elegido. Oscuro aparece como «pronto». La ventana advierte que el modo oscuro aún no está preparado y que los títulos no lo siguen. El tema visible es WhiteSur-Light, el de la demostración, no el tema previsto.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="teclado">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/teclado.png" width="1920" height="1080" alt="Ajustes del Sistema, apartado Teclado. El texto dice que la tecla Windows hace de Comando y Alt de Opción, y muestra una lista de atajos." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 05</p>
+              <h3>Teclado</h3>
+              <p class="caption">La tecla Windows hace de Comando y Alt hace de Opción. El panel lista atajos; esta página no da por ejecutado cada atajo.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="launchpad">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/launchpad.png" width="1920" height="1080" alt="Launchpad de la demostración con Ajustes del Sistema, App Store, Calculadora, Finder, Google Chrome, Terminal, TextEdit y Vista Previa." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 06</p>
+              <h3>Launchpad</h3>
+              <p class="caption">Aplicaciones de la demo: Ajustes del Sistema, App Store, Calculadora, Finder, Chrome, Terminal, TextEdit y Vista Previa. No está la carpeta Herramientas: ArtCraft no se instaló en esta sesión.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="spotlight">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/spotlight.png" width="1920" height="1080" alt="Spotlight con la búsqueda nota-demo y el resultado nota-demo.txt en la carpeta Documents, en inglés." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 07</p>
+              <h3>Spotlight</h3>
+              <p class="caption">La búsqueda encuentra nota-demo.txt, un archivo de la demo. La carpeta se muestra como Documents, en inglés: es una limitación descrita en el README.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="centro-de-control">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/centro-de-control.png" width="1920" height="1080" alt="Centro de control con Wi-Fi sin conexión, No molestar desactivado y un control de sonido, sobre el escritorio de demostración." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 08</p>
+              <h3>Centro de control</h3>
+              <p class="caption">Wi-Fi figura «Sin conexión»: la sesión no tenía adaptador. El control muestra el Wi-Fi y no lo apaga. No molestar está desactivado. El volumen se ve en pantalla y no se probó.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="app-store">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/app-store.png" width="1920" height="1080" alt="App Store en Descubrir, con PhotoCraft destacado y herramientas de Zalmann con el botón Obtener sin pulsar." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 09</p>
+              <h3>App Store</h3>
+              <p class="caption">Catálogo local, con PhotoCraft destacado. No se pulsó Obtener ni se instaló nada, y Flathub no estaba en la demo. Según el README hay 15 herramientas ArtCraft y 6 entradas de Windows, locales y gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. Esta página no da por probadas esas instalaciones.</p>
+            </figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure id="vista-rapida">
+            <button type="button" class="shot" aria-haspopup="dialog" aria-controls="visor">
+              <span class="sr-only">Ampliar.</span>
+              <img src="assets/demo/vista-rapida.png" width="1920" height="1080" alt="Vista rápida del archivo generado muestra-demo.png, con un rectángulo azul, un círculo amarillo y un rectángulo verde, y el botón Abrir con Vista Previa." loading="lazy" decoding="async" fetchpriority="low">
+            </button>
+            <figcaption>
+              <p class="kicker">Demostración · 10</p>
+              <h3>Vista rápida</h3>
+              <p class="caption">Vista rápida de la imagen generada muestra-demo.png, con el botón para abrirla en Vista Previa.</p>
+            </figcaption>
+          </figure>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="arquitectura" aria-labelledby="arquitectura-titulo">
+    <div class="wrap">
+      <p class="sec-no">02</p>
+      <h2 id="arquitectura-titulo">Arquitectura y requisitos</h2>
+      <div class="prose">
+        <p>Zalmann OS 0.8.0 es un perfil que se apoya en un Ubuntu que ya está instalado. No sustituye al sistema ni se arranca como distribución propia.</p>
+      </div>
+      <dl class="spec">
+        <div>
+          <dt>Base</dt>
+          <dd>Ubuntu con XFCE, en una sesión X11. Wayland y el uso con varios monitores no están validados.</dd>
+        </div>
+        <div>
+          <dt>Código</dt>
+          <dd>Python 3, GTK 3 y Cairo. El dock se dibuja por software. En la demostración no hay cristal en vivo, y el rebote y el punto de aplicación abierta no se probaron.</dd>
+        </div>
+        <div>
+          <dt>Herramientas</dt>
+          <dd>El README cita xprop, xdotool, xrandr, ImageMagick, rofi y herramientas de XFCE.</dd>
+        </div>
+        <div>
+          <dt>Instalación</dt>
+          <dd>El perfil se instala como usuario, dentro de la sesión, y no pide root. La pantalla de inicio de sesión y los fondos del sistema sí requieren un administrador.</dd>
+        </div>
+        <div>
+          <dt>Tema previsto</dt>
+          <dd>MacTahoe-Light-solid, con iconos y cursor. No están incluidos en el repositorio. Las capturas usan el tema alternativo WhiteSur-Light.</dd>
+        </div>
+        <div>
+          <dt>Compositor</dt>
+          <dd>Las sombras y las miniaturas de Mission Control dependen de picom. En la demostración picom no arrancó, así que no aparecen.</dd>
+        </div>
+        <div>
+          <dt>Tienda</dt>
+          <dd>Catálogo local. El README describe 15 herramientas ArtCraft y 6 entradas de Windows, gratuitas. No ejecuta aplicaciones de macOS. Android queda pendiente de Waydroid. En la demostración no se pulsó Obtener, no se instaló nada y Flathub no estaba presente. Esas instalaciones no se dan por probadas.</dd>
+        </div>
+        <div>
+          <dt>Pruebas</dt>
+          <dd>14 pruebas de unittest resultaron correctas. No son una validación completa ni una prueba sobre hardware.</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="block" id="estado" aria-labelledby="estado-titulo">
+    <div class="wrap">
+      <p class="sec-no">03</p>
+      <h2 id="estado-titulo">Estado y limitaciones</h2>
+      <p class="status"><span class="dot" aria-hidden="true"></span> En desarrollo</p>
+      <div class="prose">
+        <p>El proyecto no está terminado. Lo que sigue es el límite conocido de la versión 0.8.0 y de la demostración, no una lista de fallos inventados ni una promesa de lo que vendrá.</p>
+      </div>
+      <ul class="limits">
+        <li>No es un sistema autónomo ni una distribución arrancable. No hay imagen ISO ni descarga en esta página.</li>
+        <li>El tema previsto, MacTahoe-Light-solid, y sus iconos y cursor no viajan con el repositorio.</li>
+        <li>El modo oscuro figura como «pronto». Los títulos de las ventanas no lo siguen.</li>
+        <li>Sin picom no hay sombras ni miniaturas de Mission Control. En la demostración picom falló y la barra superior no está montada.</li>
+        <li>El dock no es cristal en vivo. El rebote y el punto de aplicación abierta no se probaron.</li>
+        <li>Spotlight puede mostrar la carpeta Documents en inglés, como describe el README.</li>
+        <li>El Wi-Fi del centro de control muestra el estado y no lo apaga. En la demo no había adaptador. El volumen no se probó y No molestar estaba desactivado.</li>
+        <li>Wayland y varios monitores no están validados. Android sigue pendiente de Waydroid.</li>
+        <li>Las 14 pruebas de unittest no cubren una validación completa ni el hardware.</li>
+        <li>Las capturas son una demostración con cuenta Demo, fondo generado y tema WhiteSur-Light. No representan la instalación de Miguel ni el aspecto final.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="enlaces" aria-labelledby="enlaces-titulo">
+    <div class="wrap">
+      <p class="sec-no">04</p>
+      <h2 id="enlaces-titulo">Enlaces</h2>
+      <div class="prose">
+        <p>La ficha está en la sección Prioritario del índice, la misma de SOPA IA y Jerry. El código de la aplicación sigue en un repositorio que no es público: no se publica el enlace ni una documentación que no se haya podido verificar. Esta página no ofrece descarga.</p>
+      </div>
+      <div class="links">
+        <a href="https://ardu01.github.io/proyectos/#zalmann-os">Abrir la ficha de Zalmann OS</a>
+        <a href="https://ardu01.github.io/proyectos/">Todos los proyectos</a>
+        <a href="https://ardu01.github.io/proyectos/#sopa-ia">SOPA IA</a>
+        <a href="https://ardu01.github.io/proyectos/#jerry">Jerry</a>
+      </div>
     </div>
   </section>
 </main>
 <footer>
   <div class="footer-in">
     <p>© 2026 Miguel Rodríguez Saiz · ArduSolutions</p>
-    <a href="https://ardu01.github.io/proyectos/">Todos los proyectos</a>
+    <a href="https://ardu01.github.io/proyectos/">Índice de proyectos</a>
   </div>
 </footer>
+
+<dialog id="visor" aria-labelledby="visor-titulo" aria-describedby="visor-texto">
+  <div class="visor">
+    <div class="visor-bar">
+      <p>Demostración · <span id="visor-cuenta">1 de 10</span></p>
+      <form method="dialog"><button type="submit">Cerrar</button></form>
+    </div>
+    <img id="visor-img" alt="" width="1920" height="1080" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+    <h2 id="visor-titulo" tabindex="-1"></h2>
+    <p id="visor-texto"></p>
+    <div class="visor-nav">
+      <button type="button" data-prev>Anterior</button>
+      <button type="button" data-next>Siguiente</button>
+    </div>
+  </div>
+</dialog>
+<script>
+(function () {
+  var buttons = Array.prototype.slice.call(document.querySelectorAll(".shot"));
+  var dialog = document.getElementById("visor");
+  if (!buttons.length || !dialog || typeof dialog.showModal !== "function") return;
+  var img = document.getElementById("visor-img");
+  var title = document.getElementById("visor-titulo");
+  var text = document.getElementById("visor-texto");
+  var count = document.getElementById("visor-cuenta");
+  var index = 0;
+
+  function show(i) {
+    index = (i + buttons.length) % buttons.length;
+    var source = buttons[index].querySelector("img");
+    var figure = buttons[index].closest("figure");
+    img.src = source.currentSrc || source.getAttribute("src");
+    img.alt = source.alt;
+    title.textContent = figure.querySelector("h3").textContent;
+    text.textContent = figure.querySelector(".caption").textContent;
+    count.textContent = (index + 1) + " de " + buttons.length;
+  }
+
+  buttons.forEach(function (button, i) {
+    button.addEventListener("click", function () {
+      show(i);
+      if (!dialog.open) dialog.showModal();
+    });
+  });
+
+  dialog.querySelector("[data-prev]").addEventListener("click", function () { show(index - 1); });
+  dialog.querySelector("[data-next]").addEventListener("click", function () { show(index + 1); });
+  dialog.addEventListener("click", function (event) {
+    if (event.target === dialog) dialog.close();
+  });
+  dialog.addEventListener("keydown", function (event) {
+    if (event.key === "ArrowLeft") { event.preventDefault(); show(index - 1); }
+    else if (event.key === "ArrowRight") { event.preventDefault(); show(index + 1); }
+  });
+})();
+</script>
 </body>
 </html>
